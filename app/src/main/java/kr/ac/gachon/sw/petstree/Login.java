@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class Login extends AppCompatActivity {
     @Override
@@ -23,4 +24,5 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
 }
