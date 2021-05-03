@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:ignore="HardcodedText">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pet's tree"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="페스츄리"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#5AC864" />
+    <EditText
+        android:id="@+id/login_id"
+        android:inputType="text"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="아이디"
+        android:importantForAutofill="no"
+        android:layout_marginTop="20dp"/>
+    <EditText
+        android:id="@+id/login_password"
+        android:inputType="textPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호"
+        android:importantForAutofill="no"/>
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:text="로그인"
+        android:textSize="16sp"
+        android:textColor="#7A7A7A"
+        android:backgroundTint="#D4DBF9CA"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="100dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="혹시 회원이 아니신가요? " />
+        <TextView
+            android:id="@+id/sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#5AC864"
+            android:text="회원가입" />
+
+    </LinearLayout>
+
+</LinearLayout>
