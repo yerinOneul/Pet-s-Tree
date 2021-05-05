@@ -23,5 +23,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // 유기동물 조회
+        Button animal_info = (Button)findViewById(R.id.animal_info);
+        animal_info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Animal_info.class);
+                startActivity(intent);
+            }
+        });
     }
 }
