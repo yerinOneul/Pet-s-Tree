@@ -22,5 +22,12 @@
         android:layout_marginTop="20dp"
         android:text="유기동물 정보 조회" />
 
+    <Button
+        android:id="@+id/open_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="home"/>
+
 </LinearLayout>
 

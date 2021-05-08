@@ -24,6 +24,8 @@
         <activity android:name=".Login"/>
         <activity android:name=".SignUp"/>
         <activity android:name=".Animal_info"/>
+        <activity android:name=".Write"/>
+        <activity android:name=".Home"/>
     </application>
 
 </manifest>
