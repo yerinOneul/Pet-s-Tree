@@ -34,9 +34,11 @@
             android:textStyle="bold" />
 
         <RadioGroup
+            android:id="@+id/radio_usertype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:checkedButton="@id/sign_up_general"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -61,13 +63,14 @@
             android:layout_height="wrap_content"
             android:hint="닉네임"
             android:importantForAutofill="no" />
+
         <EditText
             android:id="@+id/sign_up_id"
-            android:inputType="text"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="아이디"
-            android:importantForAutofill="no" />
+            android:hint="이메일"
+            android:importantForAutofill="no"
+            android:inputType="text" />
         <EditText
             android:id="@+id/sign_up_password"
             android:inputType="textPassword"
