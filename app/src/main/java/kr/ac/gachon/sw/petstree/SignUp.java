@@ -103,16 +103,17 @@ public class SignUp extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             int selectedTypeId = rgUserType.getCheckedRadioButtonId();
 
-                                            // 인증 이메일 전송
-                                            Auth.getCurrentUser().sendEmailVerification();
-
                                             // 전문가 선택시
                                             if (selectedTypeId == R.id.sign_up_professor) {
-                                                // TODO : 인증을 위한 사진 업로드 Activity로 이동
+                                                Intent certIntent = new Intent(SignUp.this, ExpectCertActivity.class);
+                                                startActivity(certIntent);
                                                 finish();
                                             }
                                             // 일반 유저 선택시
                                             else {
+                                                // 인증 이메일 전송
+                                                Auth.getCurrentUser().sendEmailVerification();
+
                                                 // 인증 이메일 전송되었다고 알림
                                                 AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this)
                                                         .setTitle(R.string.signup_emailsend_title)
