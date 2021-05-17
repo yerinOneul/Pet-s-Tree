@@ -19,18 +19,25 @@
         android:inputType="textPersonName" />
 
     <ImageButton
+        android:id="@+id/image_btn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/ic_launcher_background"/>
 
-    <EditText
-        android:id="@+id/contents"
+    <LinearLayout
+        android:id="@+id/contentsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="내용을 입력해주세요"
-        android:inputType="textMultiLine"
-        android:lines="25" />
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/contents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="내용을 입력해주세요"
+            android:inputType="textMultiLine"
+            android:lines="25" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
