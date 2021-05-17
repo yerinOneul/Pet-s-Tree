@@ -5,12 +5,21 @@
     <string name="error">에러가 발생했습니다. 다시 시도해주세요.</string>
     <string name="error_server">서버 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
 
+    <string name="login_iderror">올바른 이메일 형식을 입력해주세요.</string>
+    <string name="login_pwerror">비밀번호가 올바르지 않습니다.</string>
+    <string name="login_error">로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.</string>
+    <string name="login_emailnotverify">이메일 인증이 완료되지 않았습니다. 이메일을 확인해주세요.</string>
+    <string name="login_notcertok">전문가 인증이 완료되지 않았습니다. 장기간 이 메시지가 뜬다면 관리자에게 문의해주세요.</string>
+
     <string name="signup_emailsend_title">가입 완료</string>
     <string name="signup_emailsend">가입하신 이메일로 인증 메일이 발송되었습니다. 해당 인증을 완료하신 다음 로그인하실 수 있습니다.</string>
     <string name="signup_notfillerror">모든 칸이 입력되지 않았습니다. 모든 칸을 다 채워주세요.</string>
     <string name="signup_emailerror">올바른 이메일 형식으로 입력해주세요.</string>
     <string name="signup_pwlengtherror">비밀번호는 6자리 이상이여야 합니다.</string>
     <string name="signup_pwtesterror">비밀번호와 비밀번호 확인이 같지 않습니다. 다시 입력해주세요.</string>
+    <string name="signup_error">가입에 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="signup_weakpassword">너무 취약한 비밀번호입니다! 다른 비밀번호를 사용해주세요.</string>
+    <string name="signup_alreadyemail">이미 가입한 이메일입니다.</string>
 
     <string name="expectcert_title">전문가님 환영합니다!</string>
     <string name="expectcert_msg">서비스 이용을 위해 인증 사진 업로드가 필요합니다.</string>
