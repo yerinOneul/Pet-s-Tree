@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import kr.ac.gachon.sw.petstree.model.Write_Info;
+
 public class Write extends AppCompatActivity {
     private Button save_btn;
     private Button cancel_btn;

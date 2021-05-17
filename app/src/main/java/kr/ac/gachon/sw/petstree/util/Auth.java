@@ -42,4 +42,21 @@ public class Auth {
     public static boolean isUserEmailVerified() {
         return getCurrentUser().isEmailVerified();
     }
+
+    /**
+     * 로그인 Task를 실행해서 가져온다
+     * @param email Email
+     * @param password Password
+     * @return Task<AuthResult>
+     */
+    public static Task<AuthResult> getLoginTask(String email, String password) {
+        return getFirebaseAuth().signInWithEmailAndPassword(email, password);
+    }
+
+    /**
+     * 현재 사용자 계정에서 로그아웃한다
+     */
+    public static void signOut() {
+        getFirebaseAuth().signOut();
+    }
 }

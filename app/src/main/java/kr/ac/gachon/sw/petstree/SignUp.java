@@ -25,9 +25,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
 import kr.ac.gachon.sw.petstree.util.Auth;
+import kr.ac.gachon.sw.petstree.util.Firestore;
+import kr.ac.gachon.sw.petstree.util.LoadingDialog;
 import kr.ac.gachon.sw.petstree.util.Util;
 
 public class SignUp extends AppCompatActivity {
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class SignUp extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        loadingDialog = new LoadingDialog(this);
 
         Button btnSignUp = (Button) findViewById(R.id.sign_up_btn);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +99,8 @@ public class SignUp extends AppCompatActivity {
                 if (pw.length() >= 6) {
                     // 비밀번호와 비밀번호 확인이 일치할경우
                     if (pw.equals(pwTest)) {
+                        // 로딩 다이얼로그 활성화
+                        loadingDialog.show();
                         // 계정 생성
                         Auth.createUserTask(id, pw)
                                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -105,31 +112,63 @@ public class SignUp extends AppCompatActivity {
 
                                             // 전문가 선택시
                                             if (selectedTypeId == R.id.sign_up_professor) {
-                                                Intent certIntent = new Intent(SignUp.this, ExpectCertActivity.class);
-                                                startActivity(certIntent);
-                                                finish();
+                                                // 유저 데이터 작성 (UserType 1 -> Expect)
+                                                Firestore.writeNewUserData(Auth.getCurrentUser().getUid(), nick, false, 1)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if(task.isSuccessful()) {
+                                                                    // 인증 창으로 이동
+                                                                    Intent certIntent = new Intent(SignUp.this, ExpectCertActivity.class);
+                                                                    startActivity(certIntent);
+                                                                    finish();
+                                                                }
+                                                                else {
+                                                                    Toast.makeText(SignUp.this, R.string.signup_error, Toast.LENGTH_SHORT).show();
+                                                                }
+                                                                loadingDialog.dismiss();
+                                                            }
+                                                        });
                                             }
                                             // 일반 유저 선택시
                                             else {
-                                                // 인증 이메일 전송
-                                                Auth.getCurrentUser().sendEmailVerification();
-
-                                                // 인증 이메일 전송되었다고 알림
-                                                AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this)
-                                                        .setTitle(R.string.signup_emailsend_title)
-                                                        .setMessage(R.string.signup_emailsend)
-                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                // 유저 데이터 작성
+                                                Firestore.writeNewUserData(Auth.getCurrentUser().getUid(), nick, true,0)
+                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
-                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                finish();
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if(task.isSuccessful()) {
+                                                                    // 인증 이메일 전송
+                                                                    Auth.getCurrentUser().sendEmailVerification();
+
+                                                                    // 로그아웃
+                                                                    Auth.signOut();
+
+                                                                    // 인증 이메일 전송되었다고 알림
+                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(SignUp.this)
+                                                                            .setTitle(R.string.signup_emailsend_title)
+                                                                            .setMessage(R.string.signup_emailsend)
+                                                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                                                @Override
+                                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                                    finish();
+                                                                                }
+                                                                            });
+                                                                    builder.create().show();
+                                                                }
+                                                                else {
+                                                                    Toast.makeText(SignUp.this, R.string.signup_error, Toast.LENGTH_SHORT).show();
+                                                                }
+                                                                loadingDialog.dismiss();
                                                             }
                                                         });
-                                                builder.create().show();
+
                                             }
                                         }
                                         // 실패시
                                         else {
                                             Toast.makeText(SignUp.this, R.string.error_server, Toast.LENGTH_SHORT).show();
+                                            loadingDialog.dismiss();
                                         }
                                     }
                                 });

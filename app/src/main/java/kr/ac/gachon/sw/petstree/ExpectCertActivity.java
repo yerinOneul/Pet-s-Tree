@@ -80,6 +80,9 @@ public class ExpectCertActivity extends AppCompatActivity {
                                                                         // 인증 이메일 전송
                                                                         Auth.getCurrentUser().sendEmailVerification();
 
+                                                                        // 로그아웃
+                                                                        Auth.signOut();
+
                                                                         // 완료 알림
                                                                         AlertDialog.Builder builder = new AlertDialog.Builder(ExpectCertActivity.this)
                                                                                 .setTitle(R.string.expectcert_success_title)
