@@ -51,14 +51,6 @@ public class GalleryActivity extends AppCompatActivity {
         }
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()){
-
-            }
-        }
-    };
 
     // 저장소 권한 요청
     public void onRequestPermissionResult(int requestCode,
@@ -84,7 +76,6 @@ public class GalleryActivity extends AppCompatActivity {
         Cursor cursor;
         int column_index_data;
         String PathOfImage = null;
-        uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection;
         Intent intent = getIntent();
@@ -98,13 +89,9 @@ public class GalleryActivity extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             PathOfImage = cursor.getString(column_index_data);
-
             listOfAllImages.add(PathOfImage);
         }
         return listOfAllImages;
     }
-
-
-
 }
 

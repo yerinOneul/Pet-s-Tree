@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,24 +38,23 @@ public class GalleryAdapter extends RecyclerView.Adapter <GalleryAdapter.Gallery
     @Override
     public GalleryAdapter.GalleryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         CardView v = (CardView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_gallery, parent, false);
-        GalleryViewHolder vh = new GalleryViewHolder(v);
-
-        return vh;
-    }
-
-    @Override
-    public void onBindViewHolder(final GalleryViewHolder holder, int position) {
-        CardView v = holder.cardView;
+        final GalleryViewHolder galleryViewHolder = new GalleryViewHolder(v);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("imagePath", mDataset.get(holder.getAdapterPosition()));
+                resultIntent.putExtra("imagePath", mDataset.get(galleryViewHolder.getAdapterPosition()));
+                Log.d("Tag", mDataset.get(galleryViewHolder.getAdapterPosition()));
                 activity.setResult(Activity.RESULT_OK, resultIntent);
                 activity.finish();
             }
         });
+        return galleryViewHolder;
+    }
 
+    @Override
+    public void onBindViewHolder(@NonNull final GalleryViewHolder holder, int position) {
+        CardView v = holder.cardView;
         ImageView imageView = holder.cardView.findViewById(R.id.imageView);
         // override = 이미지 사이즈 조절
         Glide.with(activity).load(mDataset.get(position)).centerCrop().override(500).into(imageView);
