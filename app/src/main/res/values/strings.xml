@@ -18,6 +18,8 @@
     <string name="signup_pwlengtherror">비밀번호는 6자리 이상이여야 합니다.</string>
     <string name="signup_pwtesterror">비밀번호와 비밀번호 확인이 같지 않습니다. 다시 입력해주세요.</string>
     <string name="signup_error">가입에 에러가 발생했습니다. 잠시 후 다시 시도해주세요.</string>
+    <string name="signup_weakpassword">너무 취약한 비밀번호입니다! 다른 비밀번호를 사용해주세요.</string>
+    <string name="signup_alreadyemail">이미 가입한 이메일입니다.</string>
 
     <string name="expectcert_title">전문가님 환영합니다!</string>
     <string name="expectcert_msg">서비스 이용을 위해 인증 사진 업로드가 필요합니다.</string>

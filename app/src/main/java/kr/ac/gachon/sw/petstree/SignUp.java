@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;
@@ -167,8 +171,20 @@ public class SignUp extends AppCompatActivity {
                                         }
                                         // 실패시
                                         else {
-                                            Toast.makeText(SignUp.this, R.string.error_server, Toast.LENGTH_SHORT).show();
                                             loadingDialog.dismiss();
+                                            try {
+                                                Log.w(SignUp.this.getClass().getSimpleName(), "SignUp Error!", task.getException());
+                                                throw task.getException();
+                                            } catch (FirebaseAuthWeakPasswordException e) {
+                                                Toast.makeText(SignUp.this, R.string.signup_weakpassword, Toast.LENGTH_SHORT).show();
+                                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                                Toast.makeText(SignUp.this, R.string.signup_emailerror, Toast.LENGTH_SHORT).show();
+                                            } catch (FirebaseAuthUserCollisionException e) {
+                                                Toast.makeText(SignUp.this, R.string.signup_alreadyemail, Toast.LENGTH_SHORT).show();
+                                            } catch (Exception e) {
+                                                Toast.makeText(SignUp.this, R.string.error_server, Toast.LENGTH_SHORT).show();
+                                            }
+
                                         }
                                     }
                                 });
