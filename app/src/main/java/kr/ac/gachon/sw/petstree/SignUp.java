@@ -120,14 +120,15 @@ public class SignUp extends AppCompatActivity {
                                                 Firestore.writeNewUserData(Auth.getCurrentUser().getUid(), nick, false, 1)
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if(task.isSuccessful()) {
+                                                            public void onComplete(@NonNull Task<Void> writeTask) {
+                                                                if(writeTask.isSuccessful()) {
                                                                     // 인증 창으로 이동
                                                                     Intent certIntent = new Intent(SignUp.this, ExpectCertActivity.class);
                                                                     startActivity(certIntent);
                                                                     finish();
                                                                 }
                                                                 else {
+                                                                    Log.w(SignUp.this.getClass().getSimpleName(), "SignUp Error!", writeTask.getException());
                                                                     Toast.makeText(SignUp.this, R.string.signup_error, Toast.LENGTH_SHORT).show();
                                                                 }
                                                                 loadingDialog.dismiss();
@@ -140,8 +141,8 @@ public class SignUp extends AppCompatActivity {
                                                 Firestore.writeNewUserData(Auth.getCurrentUser().getUid(), nick, true,0)
                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
-                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                if(task.isSuccessful()) {
+                                                            public void onComplete(@NonNull Task<Void> writeTask) {
+                                                                if(writeTask.isSuccessful()) {
                                                                     // 인증 이메일 전송
                                                                     Auth.getCurrentUser().sendEmailVerification();
 
@@ -161,6 +162,7 @@ public class SignUp extends AppCompatActivity {
                                                                     builder.create().show();
                                                                 }
                                                                 else {
+                                                                    Log.w(SignUp.this.getClass().getSimpleName(), "SignUp Error!", writeTask.getException());
                                                                     Toast.makeText(SignUp.this, R.string.signup_error, Toast.LENGTH_SHORT).show();
                                                                 }
                                                                 loadingDialog.dismiss();
