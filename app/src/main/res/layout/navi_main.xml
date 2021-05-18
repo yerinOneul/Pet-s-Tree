@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.navigation.NavigationView xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_view"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="end"
     android:fitsSystemWindows="true"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="HardcodedText">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +44,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="설정"
                 android:textSize="18sp"
-                android:layout_margin="30dp"/>
+                android:layout_margin="30dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -52,15 +58,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="15dp"
-            android:text="@string/login"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="로그인"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingStart="15dp"
+            android:paddingEnd="0dp"
             android:text="전체 게시판 목록"
             />
         <TextView
@@ -72,6 +81,9 @@
             android:textSize="18sp"
             android:text="공지사항"
             android:textStyle="bold"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
         <TextView
             android:id="@+id/nav_community"
@@ -82,6 +94,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="반려동물 일상 게시판"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
         <TextView
             android:id="@+id/nav_community_qna"
@@ -92,6 +107,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="반려동물 관련 질문 게시판"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
         <TextView
             android:id="@+id/nav_community_share"
@@ -102,6 +120,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="정보 공유 게시판"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
         <TextView
             android:id="@+id/nav_community_counseling"
@@ -112,6 +133,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="상담 게시판"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
 
 
@@ -120,6 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:paddingStart="15dp"
+            android:paddingEnd="0dp"
             android:text="유기동물 게시판" />
         <TextView
             android:id="@+id/nav_abandoned"
@@ -130,6 +155,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="유기동물 검색"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
         <TextView
             android:id="@+id/nav_abandoned_report"
@@ -140,6 +168,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="유기동물 제보"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
 
 
@@ -148,6 +179,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:paddingStart="15dp"
+            android:paddingEnd="0dp"
             android:text="어플 게시판" />
         <TextView
             android:id="@+id/nav_report"
@@ -158,6 +190,9 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:text="오류 제보"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             />
     </LinearLayout>
 
