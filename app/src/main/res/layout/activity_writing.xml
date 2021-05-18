@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp">
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="10"/>
-
-    <EditText
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="제목"
-        android:inputType="textPersonName" />
-
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/ic_launcher_background"/>
-
-    <EditText
-        android:id="@+id/contents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="내용을 입력해주세요"
-        android:inputType="textMultiLine"
-        android:lines="25" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Button
-            android:id="@+id/cancel_btn"
-            android:layout_width="50dp"
-            android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <Spinner
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="취소"/>
+            android:text="10"/>
 
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_width="50dp"
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/green_light"
-            android:text="등록" />
+            android:ems="10"
+            android:hint="제목"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/image_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <LinearLayout
+            android:id="@+id/contentsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="내용을 입력해주세요"
+                android:inputType="textMultiLine" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/cancel_btn"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="취소"/>
+
+            <Button
+                android:id="@+id/save_btn"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/green_light"
+                android:text="등록" />
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

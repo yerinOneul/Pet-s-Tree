@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+현재 사용하지 않습니다. 궁금하시면 activity_main.xml 확인해주세요
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_login"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="로그인"
+            />
+        <item
+            android:id="@+id/nav_community"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="게시판"
+            />
+        <item
+            android:id="@+id/nav_abandoned"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:title="유기동물"
+            />
+    </group>
+</menu>
