@@ -1,10 +1,12 @@
 package kr.ac.gachon.sw.petstree;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,22 +17,70 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Animal_info extends AppCompatActivity {
+    public static AppCompatActivity activity;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = Animal_info.this;
         setContentView(R.layout.activity_animal_info);
         TextView sido = (TextView)findViewById(R.id.sido);
         TextView sigungu = (TextView)findViewById(R.id.sigungu);
         TextView shelter = (TextView)findViewById(R.id.shelter);
         TextView kindUp = (TextView)findViewById(R.id.kindUp);
         TextView kindDown = (TextView)findViewById(R.id.kindDown);
+        TextView start = (TextView)findViewById(R.id.startDate);
+        TextView end = (TextView)findViewById(R.id.endDate);
         RecyclerView recycler = (RecyclerView)findViewById(R.id.recycler_abandoned_list);
         LinearLayoutManager linearManager = new LinearLayoutManager(this);
         recycler.setLayoutManager(linearManager);
         Button btn = (Button)findViewById(R.id.btn);
         Animal_url url = new Animal_url();
         String key = getString(R.string.service_key); //api_info.xml에 등록된 service key
+
+        //날짜 선택
+        DatePickerDialog.OnDateSetListener dateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
+                //20210519 형식으로 설정
+                String year = Integer.toString(yy);
+                String month = (mm < 10) ? "0"+Integer.toString(mm) : Integer.toString(mm);
+                String day = (dd < 10) ? "0"+Integer.toString(dd) : Integer.toString(dd);
+
+                //종료일 미선택시 선택된 날짜를 시작일로 지정
+                if (end.getVisibility()==View.INVISIBLE){
+                    url.setBgnde(year+month+day);
+                    start.setText(year+"-"+month+"-"+day+"  ~");
+                    end.setVisibility(View.VISIBLE);
+                    end.setText("기간 ▼");
+                }
+                // 종료일 선택 시 시작일보다 종료일이 빠르면 toast 생성
+                else{
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmdd");
+                    try {
+                        Date startDate = dateFormat.parse(url.getBgnde());
+                        Date endDate = dateFormat.parse(year+month+day);
+                        if (startDate.compareTo(endDate) <= 0){
+                            url.setEndde(year+month+day);
+                            end.setText(year+"-"+month+"-"+day);
+                        }
+                        else{
+                            Toast.makeText(Animal_info.this,"시작일 이후의 날짜를 선택해주세요.",Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+            }
+        };
 
 
         //마지막 item에서 scroll 할 시 다음 페이지 갱신
@@ -43,14 +93,16 @@ public class Animal_info extends AppCompatActivity {
                 int total = layoutManager.getItemCount();
                 int last = layoutManager.findLastCompletelyVisibleItemPosition();
 
-                if (last >= total - 1) { //
-                    Log.e("!!!!!!!!!!!",url.getTotalCount());
+                if (last >= total - 1) { //마지막 item에서 scroll 시
                     int nor = Integer.parseInt(url.getNumOfRows());
                     int pn = Integer.parseInt(url.getPageNo());
                     int tc = Integer.parseInt(url.getTotalCount());
+
+                    //현재 페이지가 마지막 페이지인지를 판단
                     if ( (nor*pn) < tc ){
                         url.setPageNo(String.valueOf(++pn));
                         String s_url = url.getUrl();
+                        //마지막 페이지가 아니면 다음 페이지 불러오기
                         new Animal_API((Animal_adapter) recycler.getAdapter(),url,s_url,key,5).execute();
                     }
                     else
@@ -174,6 +226,27 @@ public class Animal_info extends AppCompatActivity {
             }
         });
 
+        //기간 선택 (시작)
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                end.setVisibility(View.INVISIBLE);
+                end.setText("");
+                url.setEndde("");
+                Calendar cal = Calendar.getInstance();
+                new DatePickerDialog(Animal_info.this,dateListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+            }
+        });
+
+        //기간 선택 (끝)
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                new DatePickerDialog(Animal_info.this,dateListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE)).show();
+            }
+        });
+
 
         //조회 버튼 클릭 시
         btn.setOnClickListener(new View.OnClickListener() {
@@ -181,12 +254,21 @@ public class Animal_info extends AppCompatActivity {
             public void onClick(View v) {
                 String s_url = url.getUrl();
                 Animal_adapter adapter = new Animal_adapter();
+                //해당 view 클릭 시 상세 정보 창으로 이동
+                adapter.setOnItemClickListener(new Animal_adapter.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int position) {
+                        Intent intent = new Intent(getApplicationContext(), Animal_detail.class);
+                        intent.putExtra("url",s_url);
+                        intent.putExtra("position",position);
+                        startActivity(intent);
+                    }
+                });
                 recycler.setAdapter(adapter);
                 recycler.addOnScrollListener(onScrollListener);
                 new Animal_API(adapter,url,s_url,key,5).execute();
             }
         });
-
 
 
     }

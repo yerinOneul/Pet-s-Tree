@@ -1,5 +1,10 @@
 package kr.ac.gachon.sw.petstree;
 
+//유기동물 api 활용 시 필요한 url을 만드는 class
+// bgnde, endde, upkind, kind : 검색 시작일, 검색 종료일, 축종, 품종
+// upr_cd, org_cd, care_reg_no, state, neuter_yn : 시도코드, 시군구코드, 보호소코드, 상태 (공고중 ,보호중 ..), 중성화 여부
+// pageNo, numOfRows, totalCount : 페이지 수, 한 페이지 내 item 개수, 총 검색된 item들의 개수
+
 public class Animal_url {
     private String bgnde="",endde="",upkind="",kind="";
     private String upr_cd="",org_cd="",care_reg_no="",state="",neuter_yn="";
@@ -53,8 +58,11 @@ public class Animal_url {
 
     public String getTotalCount(){ return this.totalCount; }
 
+    //설정된 검색 조건에 따른 url 생성
     public String getUrl(){
-        String sido,sigungu,shelter,kindUp,kindDown;
+        String start,end,sido,sigungu,shelter,kindUp,kindDown;
+        start = (this.bgnde=="") ? "" : "bgnde="+this.bgnde+"&";
+        end = (this.endde=="") ? "" : "endde="+this.endde+"&";
         sido = (this.upr_cd=="") ? "" : "upr_cd="+this.upr_cd+"&";
         sigungu = (this.org_cd=="") ? "" : "org_cd="+this.org_cd+"&";
         shelter = (this.care_reg_no=="") ? "" : "care_reg_no="+this.care_reg_no+"&";
@@ -62,9 +70,7 @@ public class Animal_url {
         kindDown =  (this.kind=="") ? "" : "kind="+this.kind+"&";
 
         String url = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?"+
-                //"bgnde=20140301&"+
-                //"endde=20140430&"+
-                kindUp+kindDown+sido+sigungu+shelter+
+                start+end+kindUp+kindDown+sido+sigungu+shelter+
                 "pageNo="+this.pageNo+"&numOfRows=10&ServiceKey=";
         return url;
     }

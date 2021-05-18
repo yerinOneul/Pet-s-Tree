@@ -9,7 +9,8 @@
     <RelativeLayout
         android:id = "@+id/relative"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:id = "@+id/sido"
@@ -62,17 +63,39 @@
             android:text = "품종 ▼"
             android:visibility="invisible"/>
 
+        <TextView
+            android:id = "@+id/startDate"
+            android:layout_below="@id/kindUp"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize = "20dp"
+            android:text = "기간 ▼" />
+
+        <TextView
+            android:id = "@+id/endDate"
+            android:layout_below="@id/kindDown"
+            android:layout_toRightOf="@id/startDate"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize = "20dp"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/kindUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/green_light"
+            android:text="조회"
+            android:textColor="@color/gray" />
+
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_gravity="end"
-        android:layout_toEndOf="@id/relative"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/green_light"
-        android:text="조회"
-        android:textColor="@color/gray" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_abandoned_list"

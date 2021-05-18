@@ -27,10 +27,12 @@
         <activity android:name=".Login"/>
         <activity android:name=".SignUp"/>
         <activity android:name=".Animal_info"/>
+        <activity android:name=".Animal_detail" />
         <activity android:name=".Write"/>
         <activity android:name=".Home"/>
         <activity android:name=".ExpectCertActivity" />
         <activity android:name=".GalleryActivity"/>
+
     </application>
 
 </manifest>

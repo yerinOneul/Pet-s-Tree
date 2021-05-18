@@ -1,5 +1,10 @@
 package kr.ac.gachon.sw.petstree;
 
+//유기동물 recylerview에 표시될 정보를 저장하는 class
+//image : 유기동물 사진
+//age, sex, weight, kind : 나이, 성별, 체중, 품종
+//place, shelter : 발견 장소, 보호소
+
 public class Animal {
     private String image,age,sex,weight,kind,place,shelter;
 

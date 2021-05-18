@@ -20,6 +20,13 @@ import java.net.URL;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+//유기동물 api를 통하여 검색 정보 및 유기동물 정보 불러오기
+//s_url, key : api 접속 주소, 서비스키
+//info : 불러온 정보가 화면에 표시될 textview
+//url : 검색 조건 (ex ) 시도 코드, 시군구 코드 ..)을 저장하는 animal url object
+//adapter : recylerview adapter
+//search : radioDialog
+//mode : mode에 따라 시도 조회 ~ 유기동물 조회 구분
 
 public class Animal_API extends AsyncTask<Void, Integer, Document> {
     private String s_url;
@@ -99,6 +106,9 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         super.onPostExecute(doc);
     }
 
+    //시도 조회
+    //Cd : 시도 코드 ex) 610000..
+    //Nm : 시도명 ex) 서울..
     protected void conditionSido(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
@@ -127,6 +137,9 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         search.show();
     }
 
+    //시군구 조회
+    //Cd : 시군구 코드 ex) 3240000..
+    //Nm : 시군구명 ex) 강동구..
     protected void conditionSigungu(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
@@ -156,7 +169,9 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         search.show();
     }
 
-
+    //보호소 조회
+    //Cd : 보호소 코드 ex) 284200..
+    //Nm : 보호소명 ex) 유기동물보호소..
     protected void conditionShelter(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
@@ -185,6 +200,9 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         search.show();
     }
 
+    //품종 조회
+    //Cd : 품종 코드 ex) 000054..
+    //Nm : 품종명 ex) 골든 리트리버..
     protected void conditionKind(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
@@ -213,6 +231,8 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         search.show();
     }
 
+
+    //검색 조건에 맞는 유기동물 정보 검색
     protected void animalSearch(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
