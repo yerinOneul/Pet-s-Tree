@@ -22,28 +22,29 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 public class Animal_API extends AsyncTask<Void, Integer, Document> {
-    private String url;
+    private String s_url;
     private String key;
     private TextView info;
-    private TextView info_code;
+    private Animal_url url;
     private Animal_adapter adapter;
     private AlertDialog.Builder search;
     private int mode;
 
     //조건 조회 시
-    public Animal_API(TextView info,TextView info_code,AlertDialog.Builder search, String url,String key,int mode){
+    public Animal_API(TextView info,Animal_url url,AlertDialog.Builder search, String s_url,String key,int mode){
         this.info = info; //dialog 선택 시 정보가 표시될 textview
-        this.info_code = info_code;
-        this.search = search; //radio dialog
         this.url = url;
+        this.search = search; //radio dialog
+        this.s_url = s_url;
         this.key = key;
         this.mode= mode; // mode == 1 -> 시도 조회 , mode == 2 -> 시군구 조회 ...
     }
 
     // 최종 조회 시
-    public Animal_API(Animal_adapter adapter,String url, String key, int mode){
+    public Animal_API(Animal_adapter adapter,Animal_url url, String s_url,String key, int mode){
         this.adapter = adapter;
         this.url = url;
+        this.s_url = s_url;
         this.key = key;
         this.mode= mode; // mode == 1 -> 시도 조회 , mode == 2 -> 시군구 조회 ...
     }
@@ -60,7 +61,7 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         Document doc = null;
         //xml data load
         try {
-            d_url = new URL(url+key);
+            d_url = new URL(s_url+key);
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             doc = db.parse(new InputSource(d_url.openStream()));
@@ -92,7 +93,7 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
         else if (mode == 4){//품종 조회
             conditionKind(doc);
         }
-        else if (mode == 5){//유기동물 조회
+        else if (mode == 5){// 유기동물 조회
             animalSearch(doc);
         }
         super.onPostExecute(doc);
@@ -101,11 +102,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
     protected void conditionSido(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
-        String[] Cd = new String[nodeList.getLength()];
-        String[] Nm = new String[nodeList.getLength()];
-
-        for(int i = 0; i< nodeList.getLength(); i++){
-            Node node = nodeList.item(i);
+        String[] Cd = new String[nodeList.getLength()+1];
+        String[] Nm = new String[nodeList.getLength()+1];
+        Cd[0] = "";
+        Nm[0] = "전체";
+        for(int i = 1; i< nodeList.getLength()+1; i++){
+            Node node = nodeList.item(i-1);
             Element fstElmnt = (Element) node;
             NodeList orgCd = fstElmnt.getElementsByTagName("orgCd");
             Cd[i] = orgCd.item(0).getChildNodes().item(0).getNodeValue();
@@ -113,12 +115,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
             Nm[i] = orgdownNm.item(0).getChildNodes().item(0).getNodeValue();
         }
         info.setText(Nm[0]);
-        info_code.setText(Cd[0]);
+        url.setUpr_cd(Cd[0]);
         search.setSingleChoiceItems(Nm, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 info.setText(Nm[i]);
-                info_code.setText(Cd[i]);
+                url.setUpr_cd(Cd[i]);
             }
         });
 
@@ -128,11 +130,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
     protected void conditionSigungu(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
-        String[] Cd = new String[nodeList.getLength()];
-        String[] Nm = new String[nodeList.getLength()];
-
-        for(int i = 0; i< nodeList.getLength(); i++){
-            Node node = nodeList.item(i);
+        String[] Cd = new String[nodeList.getLength()+1];
+        String[] Nm = new String[nodeList.getLength()+1];
+        Cd[0] = "";
+        Nm[0] = "전체";
+        for(int i = 1; i< nodeList.getLength()+1; i++){
+            Node node = nodeList.item(i-1);
             Element fstElmnt = (Element) node;
             NodeList orgCd = fstElmnt.getElementsByTagName("orgCd");
             Cd[i] = orgCd.item(0).getChildNodes().item(0).getNodeValue();
@@ -141,12 +144,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
 
         }
         info.setText(Nm[0]);
-        info_code.setText(Cd[0]);
+        url.setOrg_cd(Cd[0]);
         search.setSingleChoiceItems(Nm, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 info.setText(Nm[i]);
-                info_code.setText(Cd[i]);
+                url.setOrg_cd(Cd[i]);
             }
         });
 
@@ -157,11 +160,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
     protected void conditionShelter(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
-        String[] Cd = new String[nodeList.getLength()];
-        String[] Nm = new String[nodeList.getLength()];
-
-        for(int i = 0; i< nodeList.getLength(); i++){
-            Node node = nodeList.item(i);
+        String[] Cd = new String[nodeList.getLength()+1];
+        String[] Nm = new String[nodeList.getLength()+1];
+        Cd[0] = "";
+        Nm[0] = "전체";
+        for(int i = 1; i< nodeList.getLength()+1; i++){
+            Node node = nodeList.item(i-1);
             Element fstElmnt = (Element) node;
             NodeList orgCd = fstElmnt.getElementsByTagName("careRegNo");
             Cd[i] = orgCd.item(0).getChildNodes().item(0).getNodeValue();
@@ -169,12 +173,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
             Nm[i] = orgdownNm.item(0).getChildNodes().item(0).getNodeValue();
         }
         info.setText(Nm[0]);
-        info_code.setText(Cd[0]);
+        url.setOrg_cd(Cd[0]);
         search.setSingleChoiceItems(Nm, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 info.setText(Nm[i]);
-                info_code.setText(Cd[i]);
+                url.setCare_reg_no(Cd[i]);
             }
         });
 
@@ -184,11 +188,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
     protected void conditionKind(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
-        String[] Cd = new String[nodeList.getLength()];
-        String[] Nm = new String[nodeList.getLength()];
-
-        for(int i = 0; i< nodeList.getLength(); i++){
-            Node node = nodeList.item(i);
+        String[] Cd = new String[nodeList.getLength()+1];
+        String[] Nm = new String[nodeList.getLength()+1];
+        Cd[0] = "";
+        Nm[0] = "전체";
+        for(int i = 1; i< nodeList.getLength()+1; i++){
+            Node node = nodeList.item(i-1);
             Element fstElmnt = (Element) node;
             NodeList orgCd = fstElmnt.getElementsByTagName("kindCd");
             Cd[i] = orgCd.item(0).getChildNodes().item(0).getNodeValue();
@@ -196,12 +201,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
             Nm[i] = orgdownNm.item(0).getChildNodes().item(0).getNodeValue();
         }
         info.setText(Nm[0]);
-        info_code.setText(Cd[0]);
+        url.setOrg_cd(Cd[0]);
         search.setSingleChoiceItems(Nm, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 info.setText(Nm[i]);
-                info_code.setText(Cd[i]);
+                url.setKind(Cd[i]);
             }
         });
 
@@ -211,6 +216,12 @@ public class Animal_API extends AsyncTask<Void, Integer, Document> {
     protected void animalSearch(Document doc){
         // xml parsing
         NodeList nodeList = doc.getElementsByTagName("item");
+        String nor = doc.getElementsByTagName("numOfRows").item(0).getFirstChild().getNodeValue();
+        String pn = doc.getElementsByTagName("pageNo").item(0).getFirstChild().getNodeValue();
+        String total = doc.getElementsByTagName("totalCount").item(0).getFirstChild().getNodeValue();
+        url.setNumOfRows(nor);
+        url.setPageNo(pn);
+        url.setTotalCount(total);
 
         for(int i = 0; i< nodeList.getLength(); i++){
             Animal animal = new Animal();

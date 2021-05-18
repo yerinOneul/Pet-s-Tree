@@ -62,54 +62,6 @@
             android:text = "품종 ▼"
             android:visibility="invisible"/>
 
-
-        <TextView
-            android:id = "@+id/sido_code"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize = "20dp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id="@+id/sigungu_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/sido"
-            android:textSize="20dp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id = "@+id/shelter_code"
-            android:layout_toRightOf="@id/sigungu"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize = "20dp"
-            android:visibility="invisible"/>
-
-        <TextView
-            android:id = "@+id/kindUp_code"
-            android:layout_below="@id/sido"
-            android:layout_marginTop="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize = "20dp"
-            android:visibility="invisible" />
-
-        <TextView
-            android:id = "@+id/kindDown_code"
-            android:layout_below="@id/sido"
-            android:layout_toRightOf="@id/kindUp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize = "20dp"
-            android:visibility="invisible"/>
-
     </RelativeLayout>
 
     <Button
