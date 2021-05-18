@@ -80,9 +80,9 @@ public class Login extends AppCompatActivity {
 
                                 // 인증 완료라면
                                 if (loginUser.isCertOk()) {
-                                    // Home으로 가고 현재 Activity Finish
-                                    Intent homeActIntent = new Intent(Login.this, Home.class);
-                                    startActivity(homeActIntent);
+                                    // Main으로 가고 현재 Activity Finish
+                                    Intent mainActIntent = new Intent(Login.this, MainActivity.class);
+                                    startActivity(mainActIntent);
                                     finish();
                                 }
                                 // 인증이 안됐다면 오류 토스트
@@ -140,9 +140,8 @@ public class Login extends AppCompatActivity {
 
                                                             // 인증 완료라면
                                                             if (loginUser.isCertOk()) {
-                                                                // Home으로 가고 현재 Activity Finish
-                                                                Intent homeActIntent = new Intent(Login.this, Home.class);
-                                                                startActivity(homeActIntent);
+                                                                Toast.makeText(Login.this, R.string.login_success, Toast.LENGTH_SHORT).show();
+                                                                // Finish
                                                                 finish();
                                                             }
                                                             // 인증이 안됐다면 오류 토스트
