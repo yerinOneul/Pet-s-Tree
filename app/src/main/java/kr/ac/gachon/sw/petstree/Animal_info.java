@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -252,6 +253,8 @@ public class Animal_info extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //조회 클릭시 처음부터 다시 조회 -> pageNo 초기화
+                url.setPageNo("1");
                 String s_url = url.getUrl();
                 Animal_adapter adapter = new Animal_adapter();
                 //해당 view 클릭 시 상세 정보 창으로 이동
@@ -259,8 +262,10 @@ public class Animal_info extends AppCompatActivity {
                     @Override
                     public void onItemClick(View v, int position) {
                         Intent intent = new Intent(getApplicationContext(), Animal_detail.class);
-                        intent.putExtra("url",s_url);
-                        intent.putExtra("position",position);
+                        Animal_url animal = url;
+                        animal.setPageNo(String.valueOf((position/10)+1));
+                        intent.putExtra("url",animal.getUrl());
+                        intent.putExtra("position",position%10);
                         startActivity(intent);
                     }
                 });
