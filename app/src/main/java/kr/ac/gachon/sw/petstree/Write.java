@@ -9,12 +9,16 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,9 +51,11 @@ public class Write extends AppCompatActivity {
     private Button save_btn;
     private Button cancel_btn;
     private ImageButton image_btn;
+    private Spinner spinner;
     private static final String TAG = "Write";
     private FirebaseUser user;
     private ArrayList<String> pathList = new ArrayList<>();
+    private ArrayAdapter<String> arrayAdapter;
     private LinearLayout parent;
     private int pathCount, successCount;
 
@@ -61,6 +67,24 @@ public class Write extends AppCompatActivity {
         cancel_btn = findViewById(R.id.cancel_btn);
         image_btn = findViewById(R.id.image_btn);
         parent = findViewById(R.id.contentsLayout);
+        spinner = findViewById(R.id.write_spinner);
+
+        String[] items = getResources().getStringArray(R.array.boardType);
+
+        arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_spinner_dropdown_item, items);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getApplicationContext(), items[position], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(getApplicationContext(), "게시판을 선택해주세요.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         save_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +155,7 @@ public class Write extends AppCompatActivity {
                     }
                 }else{
                     contentsList.add(pathList.get(pathCount));
-                    final StorageReference imageRef = storageRef.child("users/" + user.getUid() + "/" + pathCount + ".jpg");
+                    final StorageReference imageRef = storageRef.child("posts/" + user.getUid() + "/" + pathCount + ".jpg");
                     try{
                         InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
 
@@ -152,8 +176,9 @@ public class Write extends AppCompatActivity {
                                         contentsList.set(index, uri.toString());
                                         successCount++;
                                         if(pathList.size() == successCount){
-                                            //업로드 완료
-                                            Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date());
+                                            // 업로드 완료
+                                            // BoardType은 Write_Info 참조 (0 ~ 8)
+                                            Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition());
                                             storeUpload(write_Info);
 
                                         }

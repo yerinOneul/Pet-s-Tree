@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ import kr.ac.gachon.sw.petstree.util.Firestore;
 
 
 public class MainActivity extends AppCompatActivity {
+    public FrameLayout flMain;
     private DrawerLayout mDrawerLayout;
     private ImageView ivMenu;
 
@@ -52,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         // 메뉴 레이아웃 불러오기
         mDrawerLayout = (DrawerLayout)findViewById(R.id.main_drawer_layout);
 
+        // Fragment를 띄우는 FrameLayout 불러옴
+        flMain = (FrameLayout) findViewById(R.id.fl_main);
+
         // 메뉴 아이콘 지정, 오른쪽에서 메뉴가 나타남
         ivMenu = findViewById(R.id.iv_menu);
         ivMenu.setVisibility(View.VISIBLE);
@@ -61,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.END);
             }
         });
+
+        // 기본 Fragment Set
+        replaceFragment(new Home());
 
         // 유저 정보 설정
         setUserInfo();
@@ -111,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.closeDrawers();
-                getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment, new Home());
+                replaceFragment(new Home());
             }
         });
 
@@ -121,8 +130,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mDrawerLayout.closeDrawers();
-                Intent intent = new Intent(getApplicationContext(), Animal_info.class);
-                startActivity(intent);
+                replaceFragment(new Animal_info());
             }
         });
     }
@@ -209,6 +217,11 @@ public class MainActivity extends AppCompatActivity {
             // 닫음
             mDrawerLayout.closeDrawers();
         }
+        // Backstack 있으면
+        else if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            // onBackPressed Super로 불러와서 이전 Fragment로 돌아감
+            super.onBackPressed();
+        }
         // 닫혀있다면
         else {
             // 두 번 눌러서 종료할 수 있도록 함
@@ -225,5 +238,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         setUserInfo();
+    }
+
+    /**
+     * 새 Fragment로 Replace
+     * @param fragment Replace할 Fragment
+     */
+    public void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, fragment).addToBackStack("main").commit();
     }
 }
