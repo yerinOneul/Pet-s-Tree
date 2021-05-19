@@ -49,7 +49,7 @@ public class Animal_info extends AppCompatActivity {
             public void onDateSet(DatePicker datePicker, int yy, int mm, int dd) {
                 //20210519 형식으로 설정
                 String year = Integer.toString(yy);
-                String month = (mm < 10) ? "0"+Integer.toString(mm) : Integer.toString(mm);
+                String month = (mm < 10) ? "0"+Integer.toString(mm + 1) : Integer.toString(mm + 1);
                 String day = (dd < 10) ? "0"+Integer.toString(dd) : Integer.toString(dd);
 
                 //종료일 미선택시 선택된 날짜를 시작일로 지정
