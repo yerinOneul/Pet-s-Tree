@@ -222,6 +222,11 @@ public class MainActivity extends AppCompatActivity {
         else if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
             // onBackPressed Super로 불러와서 이전 Fragment로 돌아감
             super.onBackPressed();
+            //이전 fragment가 숨겨진 상태면 show
+            if(getFragment().isVisible()==false){
+                showFragment(getFragment());
+            }
+
         }
         // 닫혀있다면
         else {
@@ -248,4 +253,26 @@ public class MainActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, fragment).addToBackStack("main").commit();
     }
+
+    //replace --> 유기동물 조회 시 아이템 클릭 후 뒤로가기를 누르면 조회 정보가 초기화
+    //조회 정보를 유지하기 위해 replace 대신 add-hide-show
+    public void addFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_main, fragment).addToBackStack(null).commit();
+    }
+
+    public void hideFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+    }
+
+    public void showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+    }
+
+    public Fragment getFragment() {
+        return getSupportFragmentManager().findFragmentById(R.id.fl_main);
+    }
+
+
+
+
 }

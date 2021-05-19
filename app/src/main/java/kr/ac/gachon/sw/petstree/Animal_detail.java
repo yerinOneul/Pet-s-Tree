@@ -89,7 +89,6 @@ public class Animal_detail extends Fragment {
             //xml data load
             try {
                 d_url = new URL(s_url+key);
-                Log.e("??url",s_url);
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
                 DocumentBuilder db = dbf.newDocumentBuilder();
                 doc = db.parse(new InputSource(d_url.openStream()));
@@ -111,7 +110,6 @@ public class Animal_detail extends Fragment {
             // xml parsing
             NodeList nodeList = doc.getElementsByTagName("item");
             Node node = nodeList.item(this.position);
-            Log.e("??url", String.valueOf(this.position));
             Element fstElmnt = (Element) node;
             NodeList popfile = fstElmnt.getElementsByTagName("popfile");
             String image_url = popfile.item(0).getChildNodes().item(0).getNodeValue();

@@ -271,7 +271,10 @@ public class Animal_info extends Fragment {
                         Animal_url animal = url;
                         animal.setPageNo(String.valueOf((position/10)+1));
                         Animal_detail animaldetailFragment = Animal_detail.getInstance(animal.getUrl(), position%10);
-                        ((MainActivity) getActivity()).replaceFragment(animaldetailFragment);
+                        Fragment current = ((MainActivity) getActivity()).getFragment();
+                        ((MainActivity) getActivity()).addFragment(animaldetailFragment);
+                        ((MainActivity) getActivity()).hideFragment(current);
+
 
 
 
