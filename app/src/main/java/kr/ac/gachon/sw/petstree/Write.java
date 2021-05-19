@@ -69,8 +69,7 @@ public class Write extends AppCompatActivity {
         parent = findViewById(R.id.contentsLayout);
         spinner = findViewById(R.id.write_spinner);
 
-        String[] items = {"공지사항", "반려동물 일상 게시판", "반려동물 관련 질문 게시판", "정보 공유 게시판", "반려동물 관련 질문 게시판",
-        "정보 공유 게시판", "상담 게시판", "유기동물 제보", "오류 제보"};
+        String[] items = getResources().getStringArray(R.array.boardType);
 
         arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item, items);
@@ -177,8 +176,9 @@ public class Write extends AppCompatActivity {
                                         contentsList.set(index, uri.toString());
                                         successCount++;
                                         if(pathList.size() == successCount){
-                                            //업로드 완료
-                                            Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date());
+                                            // 업로드 완료
+                                            // BoardType은 Write_Info 참조 (0 ~ 8)
+                                            Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition());
                                             storeUpload(write_Info);
 
                                         }
