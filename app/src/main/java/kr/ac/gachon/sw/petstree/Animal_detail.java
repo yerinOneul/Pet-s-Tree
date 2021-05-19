@@ -40,8 +40,6 @@ public class Animal_detail extends Fragment {
     public static Animal_detail getInstance(String url, int position) {
         Animal_detail animal_detail = new Animal_detail();
         Bundle bundle = new Bundle();
-        Log.e("????", url);
-        Log.e("????", String.valueOf(position));
         bundle.putString("url", url);
         bundle.putInt("position",position);
         animal_detail.setArguments(bundle);
@@ -53,7 +51,6 @@ public class Animal_detail extends Fragment {
         super.onCreate(savedInstanceState);
         if(getArguments() != null) {
             url = getArguments().getString("url");
-            Log.e("??", String.valueOf(getArguments().getInt("position")));
             pos = getArguments().getInt("position");
         }
     }
@@ -64,8 +61,6 @@ public class Animal_detail extends Fragment {
         root = inflater.inflate(R.layout.fragment_animal_detail, container, false);
         test = (TextView)root.findViewById(R.id.detail_test);
         image = (ImageView) root.findViewById(R.id.detail_image);
-        Log.e("pos찾기", String.valueOf(pos));
-        Log.e("pos찾기", url);
         new loadData(url, getString(R.string.service_key), pos).execute();
         return root;
     }
