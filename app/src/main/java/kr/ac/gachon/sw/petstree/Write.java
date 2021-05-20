@@ -2,6 +2,8 @@ package kr.ac.gachon.sw.petstree;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -106,15 +109,19 @@ public class Write extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startToast("게시글 작성을 취소했습니다.");
-                Intent intent = new Intent(getApplicationContext(), Home.class);
-                startActivity(intent);
+                finish();
             }
         });
 
         image_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myStartActivity(GalleryActivity.class, "image");
+                ImagePicker.Companion.with(Write.this)
+                        .crop()
+                        .galleryMimeTypes(new String[]{"image/png", "image/jpg", "image/jpeg"})
+                        .compress(1024)
+                        .maxResultSize(1080, 1080)
+                        .start();
             }
         });
     }
@@ -137,22 +144,25 @@ public class Write extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case 0:
-                if(resultCode == Activity.RESULT_OK){
-                   String imagePath = data.getStringExtra("imagePath");
-                   pathList.add(imagePath);
+            case ImagePicker.REQUEST_CODE:
+                if(resultCode == Activity.RESULT_OK) {
+                    pathList.add(ImagePicker.Companion.getFilePath(data));
 
-                   ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
+                    ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT );
 
-                   ImageView imageView = new ImageView(Write.this);
-                   imageView.setLayoutParams(layoutParams);
-                   Glide.with(this).load(imagePath).override(1000).into(imageView);
-                   parent.addView(imageView);
+                    ImageView imageView = new ImageView(Write.this);
+                    imageView.setLayoutParams(layoutParams);
+                    Glide.with(this).load(ImagePicker.Companion.getFilePath(data)).override(1000).into(imageView);
+                    parent.addView(imageView);
 
-                   EditText editText = new EditText(Write.this);
-                   editText.setLayoutParams(layoutParams);
-                   editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
-                   parent.addView(editText);
+                    EditText editText = new EditText(Write.this);
+                    editText.setLayoutParams(layoutParams);
+                    editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
+                    parent.addView(editText);
+
+                } else if (resultCode == ImagePicker.RESULT_ERROR) {
+                    Log.w(this.getClass().getSimpleName(), "ImagePicker Error : " + ImagePicker.Companion.getError(data));
+                    Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -175,7 +185,8 @@ public class Write extends AppCompatActivity {
                     if(text.length() > 0){
                         contentsList.add(text);
                     }
-                }else{
+                }
+                else {
                     contentsList.add(pathList.get(pathCount));
                     final StorageReference imageRef = storageRef.child("posts/" + user.getUid() + "/" + pathCount + ".jpg");
                     try{
@@ -227,9 +238,7 @@ public class Write extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference){
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        Intent intent = new Intent(getApplicationContext(), Home.class);
-                        startActivity(intent);
-                        //finish();
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

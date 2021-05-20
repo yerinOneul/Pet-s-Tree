@@ -10,6 +10,9 @@ public class User {
     // User Type (0 - Normal, 1 - Expect)
     private int userType;
 
+    // Admin 여부
+    private boolean admin;
+
     public User() {
 
     }
@@ -18,6 +21,7 @@ public class User {
         this.userNickName = userNickName;
         this.certOk = certOk;
         this.userType = userType;
+        this.admin = false;
     }
 
     public String getUserNickName() {
@@ -42,5 +46,13 @@ public class User {
 
     public void setUserType(int userType) {
         this.userType = userType;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }
