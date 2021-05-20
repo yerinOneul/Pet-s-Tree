@@ -21,6 +21,7 @@ import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ public class Write extends AppCompatActivity {
     private Button cancel_btn;
     private ImageButton image_btn;
     private Spinner spinner;
+    private RelativeLayout loaderLayout;
     private static final String TAG = "Write";
     private FirebaseUser user;
     private ArrayList<String> pathList = new ArrayList<>();
@@ -74,6 +76,7 @@ public class Write extends AppCompatActivity {
         image_btn = findViewById(R.id.image_btn);
         parent = findViewById(R.id.contentsLayout);
         spinner = findViewById(R.id.write_spinner);
+        loaderLayout = findViewById(R.id.loaderLayout);
 
         actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -173,6 +176,7 @@ public class Write extends AppCompatActivity {
         //final String contents = ((EditText)findViewById(R.id.contents)).getText().toString();
 
         if(title.length()>0){
+            loaderLayout.setVisibility(View.VISIBLE);
             ArrayList<String> contentsList = new ArrayList<>();
             user = FirebaseAuth.getInstance().getCurrentUser();
             FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -226,6 +230,11 @@ public class Write extends AppCompatActivity {
                     pathCount++;
                 }
             }
+            // 이미지 넣지 않아도 게시글 저장되게 하기
+            if(pathList.size() == 0){
+                Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition());
+                storeUpload(write_Info);
+            }
         }else {
             startToast("내용을 입력해주세요.");
         }
@@ -238,6 +247,7 @@ public class Write extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference){
                         Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                        loaderLayout.setVisibility(View.GONE);
                         finish();
                     }
                 })
@@ -245,6 +255,7 @@ public class Write extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e){
                         Log.w(TAG, "Error adding document", e);
+                        loaderLayout.setVisibility(View.GONE);
                     }
                 });
 
