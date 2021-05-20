@@ -24,7 +24,5 @@ public class Post {
     public String getBody() {
         return body;
     }
-    public String getNum_comments() {
-        return Integer.toString(num_comments);
-    }
+    public String getNum_comments() { return Integer.toString(num_comments); }
 }

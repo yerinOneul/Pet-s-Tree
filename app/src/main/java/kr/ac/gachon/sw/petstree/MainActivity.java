@@ -115,15 +115,94 @@ public class MainActivity extends AppCompatActivity {
         TextView abandonedReport = findViewById(R.id.nav_abandoned_report);
         TextView errorReport = findViewById(R.id.nav_report);
 
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                mDrawerLayout.closeDrawers();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 0);
+                home.setArguments(bundle);
+                replaceFragment(home);
+            }
+        });
+
+
         // 게시판은 프레그먼트 형태로 메인 액티비티에 표시됩니다.
         TextView community = findViewById(R.id.nav_community);
         community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Fragment home = new Home();
                 mDrawerLayout.closeDrawers();
-                replaceFragment(new Home());
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 1);
+                home.setArguments(bundle);
+                replaceFragment(home);
             }
         });
+
+        communityQnA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                mDrawerLayout.closeDrawers();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 2);
+                home.setArguments(bundle);
+                replaceFragment(home);
+            }
+        });
+
+        communityShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                mDrawerLayout.closeDrawers();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 3);
+                home.setArguments(bundle);
+                replaceFragment(home);
+            }
+        });
+
+        communityCounseling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                mDrawerLayout.closeDrawers();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 4);
+                home.setArguments(bundle);
+                replaceFragment(home);
+            }
+        });
+
+        abandonedReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                mDrawerLayout.closeDrawers();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 5);
+                home.setArguments(bundle);
+                replaceFragment(home);
+            }
+        });
+
+        errorReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                mDrawerLayout.closeDrawers();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", 6);
+                home.setArguments(bundle);
+                replaceFragment(home);
+            }
+        });
+
+
 
         // 유기동물 검색
         TextView abandoned = findViewById(R.id.nav_abandoned);

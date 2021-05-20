@@ -214,8 +214,8 @@ public class Write extends AppCompatActivity {
                                         successCount++;
                                         if(pathList.size() == successCount){
                                             // 업로드 완료
-                                            // BoardType은 Write_Info 참조 (0 ~ 8)
-                                            Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition());
+                                            // BoardType은 Write_Info 참조 (0 ~ 6)
+                                            Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition(), 0);
                                             storeUpload(write_Info);
 
                                         }
@@ -232,7 +232,7 @@ public class Write extends AppCompatActivity {
             }
             // 이미지 넣지 않아도 게시글 저장되게 하기
             if(pathList.size() == 0){
-                Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition());
+                Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition(), 0);
                 storeUpload(write_Info);
             }
         }else {

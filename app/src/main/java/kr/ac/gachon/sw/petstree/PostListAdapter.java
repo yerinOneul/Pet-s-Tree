@@ -1,5 +1,6 @@
 package kr.ac.gachon.sw.petstree;
 
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,31 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import kr.ac.gachon.sw.petstree.model.Write_Info;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHolder> {
 
-    private ArrayList<Post> items = new ArrayList<>();
+    private ArrayList<Write_Info> items;
+    private Home activity;
 
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView title, publisher, num_comments;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            title = itemView.findViewById(R.id.post_title);
+            publisher = itemView.findViewById(R.id.post_author);
+            num_comments = itemView.findViewById(R.id.num_comments);
+        }
+    }
+
+    public PostListAdapter(Home activity, ArrayList<Write_Info> mitems){
+        items = mitems;
+        this.activity = activity;
+
+    }
     @NonNull
     @Override
     public PostListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
@@ -27,11 +48,11 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull PostListAdapter.ViewHolder viewHolder, int position) {
 
-        Post item = items.get(position);
+        Write_Info item = items.get(position);
 
         viewHolder.title.setText(item.getTitle());
-        viewHolder.author.setText(item.getAuthor());
-        viewHolder.num_comments.setText(item.getNum_comments());
+        viewHolder.publisher.setText(item.getPublisher());
+        viewHolder.num_comments.setText(String.valueOf(item.getNum_comments()));
 
     }
 
@@ -41,20 +62,9 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
         return items.size();
     }
 
-    public void setItems(ArrayList<Post> items) {
+    public void setItems(ArrayList<Write_Info> items) {
         this.items = items;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, author, num_comments;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-
-            title = itemView.findViewById(R.id.post_title);
-            author = itemView.findViewById(R.id.post_author);
-            num_comments = itemView.findViewById(R.id.num_comments);
-        }
-    }
 }
