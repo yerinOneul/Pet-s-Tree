@@ -26,7 +26,8 @@
         </activity>
         <activity android:name=".Login"/>
         <activity android:name=".SignUp"/>
-        <activity android:name=".Write"/>
+        <activity android:name=".Write"
+            android:theme="@style/Theme.PetsTree.Titlebar" />
         <activity android:name=".ExpectCertActivity" />
         <activity android:name=".GalleryActivity"/>
 

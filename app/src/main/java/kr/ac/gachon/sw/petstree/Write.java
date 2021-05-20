@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -48,6 +50,7 @@ import java.util.Date;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
 
 public class Write extends AppCompatActivity {
+    private ActionBar actionBar;
     private Button save_btn;
     private Button cancel_btn;
     private ImageButton image_btn;
@@ -68,6 +71,12 @@ public class Write extends AppCompatActivity {
         image_btn = findViewById(R.id.image_btn);
         parent = findViewById(R.id.contentsLayout);
         spinner = findViewById(R.id.write_spinner);
+
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.write);
+        }
 
         String[] items = getResources().getStringArray(R.array.boardType);
 
@@ -108,6 +117,19 @@ public class Write extends AppCompatActivity {
                 myStartActivity(GalleryActivity.class, "image");
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Google 정책에 따라 MenuItem에 Switch 사용하지 않고 if문 사용
+        int itemId = item.getItemId();
+
+        if(itemId == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // 사진 선택 시 이미지를 view에 띄워준다.

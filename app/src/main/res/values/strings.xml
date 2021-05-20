@@ -30,6 +30,8 @@
     <string name="signup_weakpassword">너무 취약한 비밀번호입니다! 다른 비밀번호를 사용해주세요.</string>
     <string name="signup_alreadyemail">이미 가입한 이메일입니다.</string>
 
+    <string name="write">글쓰기</string>
+
     <string name="expectcert_title">전문가님 환영합니다!</string>
     <string name="expectcert_msg">서비스 이용을 위해 인증 사진 업로드가 필요합니다.</string>
     <string name="expectcert_success_title">전문가 인증 요청이 완료되었습니다.</string>

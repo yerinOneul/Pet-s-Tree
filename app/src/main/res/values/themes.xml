@@ -16,5 +16,10 @@
         <item name="windowNoTitle">true</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.PetsTree.Titlebar" parent="Theme.PetsTree">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+    </style>
 </resources>
 
