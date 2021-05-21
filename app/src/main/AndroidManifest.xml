@@ -28,8 +28,10 @@
         <activity android:name=".SignUp"/>
         <activity android:name=".Write"
             android:theme="@style/Theme.PetsTree.Titlebar" />
-        <activity android:name=".ExpectCertActivity" />
+        <activity android:name=".certreq.ExpectCertActivity" />
         <activity android:name=".GalleryActivity"/>
+        <activity android:name=".certreq.CertRequestViewActivity"
+            android:theme="@style/Theme.PetsTree.Titlebar" />
 
     </application>
 

@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.certreq;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,9 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Date;
+
+import kr.ac.gachon.sw.petstree.R;
+import kr.ac.gachon.sw.petstree.model.CertRequest;
 import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;
 import kr.ac.gachon.sw.petstree.util.Storage;
@@ -72,7 +77,8 @@ public class ExpectCertActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Uri> task1) {
                                                 if(task1.isSuccessful()) {
-                                                    Firestore.writeCertRequestData(Auth.getCurrentUser().getUid(), task1.getResult().toString())
+                                                    CertRequest certRequest = new CertRequest(Auth.getCurrentUser().getUid(), new Timestamp(new Date()), task1.getResult().toString());
+                                                    Firestore.writeCertRequestData(certRequest)
                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task2) {

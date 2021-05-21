@@ -1,6 +1,7 @@
 package kr.ac.gachon.sw.petstree.util;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
@@ -18,8 +19,9 @@ public class Storage {
 
     /**
      * Storage Instance를 가져온다
-     * @author Minjae Seon
+     *
      * @return FirebaseStorage Instance
+     * @author Minjae Seon
      */
     public static FirebaseStorage getStorageInstance() {
         return FirebaseStorage.getInstance();
@@ -27,10 +29,11 @@ public class Storage {
 
     /**
      * 전문가 인증 이미지를 업로드한다
-     * @author Minjae Seon
+     *
      * @param userId 사용자 Firebase ID
      * @param bitmap Image Bitmap
      * @return Task<UploadTask.TaskSnapshot> (업로드 Task)
+     * @author Minjae Seon
      */
     public static Task<UploadTask.TaskSnapshot> uploadExpectCertImg(String userId, Bitmap bitmap) {
         StorageReference userCertRef = expectCertRef.child(userId + "/cert.jpg");
@@ -39,5 +42,25 @@ public class Storage {
         byte[] data = byteArrayOutputStream.toByteArray();
 
         return userCertRef.putBytes(data);
+    }
+
+    /**
+     * URL을 통해 이미지를 불러온다
+     *
+     * @param URL 이미지 URL
+     * @return Task<byte []>
+     */
+    public static Task<byte[]> getImageFromURL(String URL) {
+        StorageReference profileReference = getStorageInstance().getReferenceFromUrl(URL);
+        return profileReference.getBytes(1500000);
+    }
+
+    /**
+     * 파일을 삭제한다
+     * @param ref 삭제할 위치의 StorageReference
+     * @return Task<Void>
+     */
+    public static Task<Void> deleteStorageFile(StorageReference ref) {
+        return ref.delete();
     }
 }

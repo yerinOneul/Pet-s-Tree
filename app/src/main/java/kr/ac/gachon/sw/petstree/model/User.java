@@ -1,6 +1,11 @@
 package kr.ac.gachon.sw.petstree.model;
 
+import com.google.firebase.firestore.Exclude;
+
 public class User {
+    // User ID
+    private String userId;
+
     // User NickName
     private String userNickName;
 
@@ -54,5 +59,14 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    @Exclude
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

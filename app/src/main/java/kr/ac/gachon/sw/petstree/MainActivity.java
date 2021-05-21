@@ -1,7 +1,6 @@
 package kr.ac.gachon.sw.petstree;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,17 +8,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,9 +19,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import kr.ac.gachon.sw.petstree.certreq.ExpectReqFragment;
 import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;
@@ -69,8 +61,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 기본 Fragment Set
-        replaceFragment(new Home());
-
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_main, new Home()).commit();
 
         // 유저 정보 설정
         setUserInfo();
@@ -203,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         // 유기동물 검색
         TextView abandoned = findViewById(R.id.nav_abandoned);
         abandoned.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +227,9 @@ public class MainActivity extends AppCompatActivity {
                                 tvNickName.setText(user.getUserNickName());
                                 tvClass.setText(getResources().getStringArray(R.array.userclass)[user.getUserType()]);
                                 tvLogin.setText(getString(R.string.logout));
+
+                                // 어드민 메뉴 설정
+                                setAdminMenu(user.isAdmin());
                             }
                             // 실패시
                             else {
@@ -302,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
             // onBackPressed Super로 불러와서 이전 Fragment로 돌아감
             super.onBackPressed();
             //이전 fragment가 숨겨진 상태면 show
-            if(getFragment().isVisible()==false){
+            if(getFragment() != null && !getFragment().isVisible()){
                 showFragment(getFragment());
             }
 
@@ -330,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
      * @param fragment Replace할 Fragment
      */
     public void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, fragment).addToBackStack("main").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_main, fragment).addToBackStack(null).commit();
     }
 
     //replace --> 유기동물 조회 시 아이템 클릭 후 뒤로가기를 누르면 조회 정보가 초기화
@@ -351,7 +344,29 @@ public class MainActivity extends AppCompatActivity {
         return getSupportFragmentManager().findFragmentById(R.id.fl_main);
     }
 
+    /**
+     * 어드민 메뉴 설정
+     */
+    private void setAdminMenu(boolean isShow) {
+        TextView adminmenu_title = findViewById(R.id.adminmenu_title);
+        TextView adminmenu_checkreq = findViewById(R.id.adminmenu_checkreq);
 
+        if(isShow) {
+            adminmenu_title.setVisibility(View.VISIBLE);
+            adminmenu_checkreq.setVisibility(View.VISIBLE);
 
+            adminmenu_checkreq.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDrawerLayout.closeDrawers();
+                    replaceFragment(new ExpectReqFragment());
+                }
+            });
+        }
+        else {
+            adminmenu_title.setVisibility(View.GONE);
+            adminmenu_checkreq.setVisibility(View.GONE);
+        }
+    }
 
 }

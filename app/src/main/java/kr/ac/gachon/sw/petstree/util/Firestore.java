@@ -5,11 +5,13 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
 
+import kr.ac.gachon.sw.petstree.model.CertRequest;
 import kr.ac.gachon.sw.petstree.model.Comment;
 import kr.ac.gachon.sw.petstree.model.User;
 
@@ -26,16 +28,11 @@ public class Firestore {
     /**
      * 전문가 인증 요청 데이터를 DB에 쓴다
      * @author Minjae Seon
-     * @param userId 사용자 Firebase UID
-     * @param imgUrl 이미지 URL
+     * @param certRequest CertRequest Object (인증 요청 데이터 Class)
      * @return Task<Void>
      */
-    public static Task<Void> writeCertRequestData(String userId, String imgUrl) {
-        HashMap<String, Object> data = new HashMap<>();
-        data.put("userId", userId);
-        data.put("time", new Timestamp(new Date()));
-        data.put("imgUrl", imgUrl);
-        return getFirestoreInstance().collection("certreq").document(userId).set(data);
+    public static Task<Void> writeCertRequestData(CertRequest certRequest) {
+        return getFirestoreInstance().collection("certreq").document(certRequest.getUserId()).set(certRequest);
     }
 
     /**
@@ -52,12 +49,22 @@ public class Firestore {
     }
 
     /**
-     * 전문가 사용자의 인증 여부를 True로 변경한다
+     * 전문가 사용자의 인증 여부를 변경한다
      * @param userId User Firebase UID
+     * @param isAccept 승인 여부
      * @return Task<Void>
      */
-    public static Task<Void> updateExpectCertSuccess(String userId) {
-        return getFirestoreInstance().collection("users").document(userId).update("certOk", true);
+    public static Task<Void> updateExpectCert(String userId, boolean isAccept) {
+        return getFirestoreInstance().collection("users").document(userId).update("certOk", isAccept);
+    }
+
+    /**
+     * 전문가 인증 요청 여부를 삭제한다
+     * @param reqId Request Doc ID
+     * @return Task<Void>
+     */
+    public static Task<Void> deleteExpectCertReq(String reqId) {
+        return getFirestoreInstance().collection("certreq").document(reqId).delete();
     }
 
     /**
@@ -116,4 +123,11 @@ public class Firestore {
         return getFirestoreInstance().collection("posts").document(postId).collection("comment").add(comment);
     }
 
+    /**
+     * 전문가 요청 데이터 가져오는 Query 반환
+     * @return Query
+     */
+    public static Query getExpectReqData() {
+        return getFirestoreInstance().collection("certreq");
+    }
 }

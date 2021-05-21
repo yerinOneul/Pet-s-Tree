@@ -37,6 +37,14 @@
     <string name="expectcert_success_title">전문가 인증 요청이 완료되었습니다.</string>
     <string name="expectcert_success_msg">우선 가입시에 작성하신 이메일에 전송된 이메일 인증을 확인해주세요.\n이메일 인증이 완료되면 관리자 확인 후 서비스를 이용하실 수 있습니다.</string>
 
+    <string name="certreq_empty">요청 내역이 없습니다.</string>
+
+    <string name="certreqview_title">인증 요청 - %1$s</string>
+    <string name="certreqview_requesttime">요청 시간 : %1$s</string>
+    <string name="certreqview_decline">거절</string>
+    <string name="certreqview_accept">승인</string>
+    <string name="certreqview_success">성공적으로 확인 여부가 업데이트 되었습니다.</string>
+
     <string-array name="userclass">
         <item>일반</item>
         <item>전문가</item>
