@@ -1,11 +1,9 @@
 package kr.ac.gachon.sw.petstree;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,6 +15,7 @@ import java.net.URL;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+@RunWith(JUnit4.class)
 public class LoadAnimalInfo {
     private String s_url;
     private String key;
