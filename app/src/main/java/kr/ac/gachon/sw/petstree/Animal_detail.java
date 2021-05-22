@@ -1,19 +1,20 @@
 package kr.ac.gachon.sw.petstree;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +23,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.InputSource;
 
 import java.net.URL;
@@ -34,8 +34,9 @@ public class Animal_detail extends Fragment {
     private View root;
     private int pos;
     private String url;
-    private TextView test;
+    private TextView stateView,kindView,sexView,ageView,weightView,colorView,detailView;
     private ImageView image;
+    private Button care_call,call;
 
     public static Animal_detail getInstance(String url, int position) {
         Animal_detail animal_detail = new Animal_detail();
@@ -59,8 +60,18 @@ public class Animal_detail extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable  Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_animal_detail, container, false);
-        test = (TextView)root.findViewById(R.id.detail_test);
         image = (ImageView) root.findViewById(R.id.detail_image);
+        stateView = (TextView)root.findViewById(R.id.detail_state);
+        kindView = (TextView)root.findViewById(R.id.detail_kind);
+        sexView = (TextView)root.findViewById(R.id.detail_sex);
+        ageView  = (TextView)root.findViewById(R.id.detail_age);
+        weightView  = (TextView)root.findViewById(R.id.detail_weight);
+        colorView  = (TextView)root.findViewById(R.id.detail_color);
+        detailView  = (TextView)root.findViewById(R.id.detail);
+        care_call = (Button)root.findViewById(R.id.detail_care_call);
+        call = (Button)root.findViewById(R.id.detail_call);
+
+
         new loadData(url, getString(R.string.service_key), pos).execute();
         return root;
     }
@@ -152,28 +163,58 @@ public class Animal_detail extends Fragment {
             String chargeNm = chargeNmN.item(0).getChildNodes().item(0).getNodeValue();
             NodeList officetelN = fstElmnt.getElementsByTagName("officetel");               //담당자 연락처
             String officetel = officetelN.item(0).getChildNodes().item(0).getNodeValue();
+            
+            //상태가 보호중이 아닌 사망 등이면 빨간색으로 표시
+            stateView.setText(processState);
+            if (!processState.equals("보호중")) {
+                stateView.setBackgroundColor(Color.RED);
+                stateView.setTextColor(Color.WHITE);
+            }
+            kindView.setText(kind);
+            if (sexCd == "F")
+                sexView.setText("성별 : 암컷");
+            else if (sexCd == "M")
+                sexView.setText("성별 : 수컷");
+            else
+                sexView.setText("성별 : 미상");
+            colorView.setText("색상 : "+color);
+            ageView.setText(age);
+            weightView.setText("체중 : "+weight);
+            if (neuterYn == "Y")
+                neuterYn = "○";
+            else if (neuterYn == "N")
+                neuterYn = "X";
+            else
+                neuterYn = "미상";
 
 
-            test.setText("접수일 : " + happenDt + "\n" +
-                    "발견장소 : " + happenPlace + "\n" +
-                    "품종 : " + kind + "\n" +
-                    "색상 : " + color + "\n" +
-                    "나이 : " + age + "\n" +
-                    "체충 : " + weight + "\n" +
-                    "공고 번호 : " + noticeNo + "\n" +
-                    "공고시작일 : " + noticeSdt + "\n" +
-                    "공고종료일 : " + noticeEdt + "\n" +
-                    "상태 : " + processState + "\n" +
-                    "성별 : " + sexCd + "\n" +
-                    "중성화여부 : " + neuterYn + "\n" +
-                    "특징 : " + specialMark + "\n" +
-                    "보호소 이름 : " + careNm + "\n" +
-                    "보호소 전화번호 : " + careTel + "\n" +
-                    "보호 장소 : " + careAddr + "\n" +
-                    "관할 기관 : " + orgNm + "\n" +
-                    "담당자 : " + chargeNm + "\n" +
-                    "담당자 연락처 : " + officetel + "\n"
+            detailView.setText("※접수일 : " + happenDt + "\n" +
+                    "※발견장소 : " + happenPlace + "\n" +
+                    "※공고 번호 : " + noticeNo + "\n" +
+                    "※공고기간 : " + noticeSdt +  " ~ " + noticeEdt +"\n" +
+                    "※중성화여부 : " + neuterYn + "\n" +
+                    "※특징 : " + specialMark + "\n" +
+                    "※보호소 이름 : " + careNm + "\n" +
+                    "※보호 장소 : " + careAddr + "\n" +
+                    "※관할 기관 : " + orgNm + "\n" +
+                    "※담당자 : " + chargeNm + "\n"
             );
+
+            care_call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+careTel));
+                    startActivity(intent);
+                }
+            });
+
+            call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+officetel));
+                    startActivity(intent);
+                }
+            });
 
 
             String str = popfile.item(0).getChildNodes().item(0).getNodeValue();
