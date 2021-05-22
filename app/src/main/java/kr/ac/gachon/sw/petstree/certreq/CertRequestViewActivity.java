@@ -2,6 +2,7 @@ package kr.ac.gachon.sw.petstree.certreq;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -63,6 +64,20 @@ public class CertRequestViewActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Google 정책에 따라 MenuItem에 Switch 사용하지 않고 if문 사용
+        int itemId = item.getItemId();
+
+        if(itemId == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void setData() {
