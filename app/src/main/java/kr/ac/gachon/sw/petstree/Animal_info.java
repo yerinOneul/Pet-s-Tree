@@ -204,6 +204,8 @@ public class Animal_info extends Fragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         kindUp.setText(list[i]);
                         url.setUpkind(list_code[i]);
+                        Log.e("!!!",url.getUrl());
+
                     }
                 });
                 search.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -263,20 +265,25 @@ public class Animal_info extends Fragment {
                 //조회 클릭시 처음부터 다시 조회 -> pageNo 초기화
                 url.setPageNo("1");
                 String s_url = url.getUrl();
+                Log.e("!!!",s_url);
                 Animal_adapter adapter = new Animal_adapter();
                 //해당 view 클릭 시 상세 정보 창으로 이동
                 adapter.setOnItemClickListener(new Animal_adapter.OnItemClickListener() {
                     @Override
                     public void onItemClick(View v, int position) {
-                        Animal_url animal = url;
+                        Animal_url animal = null;
+                        //deep copy -- > 그냥 copy하면 url과 animal이 같이 변경되어 사용자가 선택한 동물과 detail view에 나오는 동물이
+                        //달라지는 error 발생
+                        try {
+                            animal = (Animal_url) url.clone();
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
                         animal.setPageNo(String.valueOf((position/10)+1));
                         Animal_detail animaldetailFragment = Animal_detail.getInstance(animal.getUrl(), position%10);
                         Fragment current = ((MainActivity) getActivity()).getFragment();
                         ((MainActivity) getActivity()).addFragment(animaldetailFragment);
                         ((MainActivity) getActivity()).hideFragment(current);
-
-
-
 
                     }
                 });

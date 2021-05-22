@@ -5,7 +5,7 @@ package kr.ac.gachon.sw.petstree;
 // upr_cd, org_cd, care_reg_no, state, neuter_yn : 시도코드, 시군구코드, 보호소코드, 상태 (공고중 ,보호중 ..), 중성화 여부
 // pageNo, numOfRows, totalCount : 페이지 수, 한 페이지 내 item 개수, 총 검색된 item들의 개수
 
-public class Animal_url {
+public class Animal_url implements Cloneable{
     private String bgnde="",endde="",upkind="",kind="";
     private String upr_cd="",org_cd="",care_reg_no="",state="",neuter_yn="";
     private String pageNo="",numOfRows="", totalCount="";
@@ -66,7 +66,7 @@ public class Animal_url {
         sido = (this.upr_cd=="") ? "" : "upr_cd="+this.upr_cd+"&";
         sigungu = (this.org_cd=="") ? "" : "org_cd="+this.org_cd+"&";
         shelter = (this.care_reg_no=="") ? "" : "care_reg_no="+this.care_reg_no+"&";
-        kindUp =  (this.upr_cd=="") ? "" : "upkind="+this.upkind+"&";
+        kindUp =  (this.upkind=="") ? "" : "upkind="+this.upkind+"&";
         kindDown =  (this.kind=="") ? "" : "kind="+this.kind+"&";
 
         String url = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?"+
@@ -75,6 +75,10 @@ public class Animal_url {
         return url;
     }
 
+    public Object clone() throws CloneNotSupportedException {
 
+        return super.clone();
+
+    }
 
 }

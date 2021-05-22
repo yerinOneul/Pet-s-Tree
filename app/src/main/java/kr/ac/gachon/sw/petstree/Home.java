@@ -6,11 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +32,7 @@ public class Home extends Fragment {
     private PostListAdapter postListAdapter = new PostListAdapter(this, postArrayList);
     private String TAG = "Home";
     private int board = -1;
+    private int btn_state = 0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable  ViewGroup container,  Bundle savedInstanceState) {
@@ -116,10 +117,59 @@ public class Home extends Fragment {
 
 
         FloatingActionButton fab = root.findViewById(R.id.plus_btn);
+        FloatingActionButton fab_write = root.findViewById(R.id.write_btn);
+        FloatingActionButton fab_report = root.findViewById(R.id.report_btn);
+        //+모양을 x모양으로 회전
+        Animation rotate = AnimationUtils.loadAnimation(getContext(),R.anim.anim_rotate);
+        //x모양을 +모양으로
+        Animation reverse = AnimationUtils.loadAnimation(getContext(),R.anim.anim_reverse);
+        //버튼 fade in , fade out animation
+        Animation fade_in = AnimationUtils.loadAnimation(getContext(),R.anim.anim_fade_in);
+        Animation fade_out = AnimationUtils.loadAnimation(getContext(),R.anim.anim_fade_out);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if ( btn_state == 0){
+                    //버튼 나타나기
+                    fab.startAnimation(rotate);
+                    fab_write.setVisibility(View.VISIBLE);
+                    fab_write.startAnimation(fade_in);
+                    fab_report.setVisibility(View.VISIBLE);
+                    fab_report.startAnimation(fade_in);
+                    btn_state = 1;
+                }
+                else{
+                    //사라지기
+                    fab.startAnimation(reverse);
+                    fab_write.startAnimation(fade_out);
+                    fab_write.setVisibility(View.INVISIBLE);
+                    fab_report.startAnimation(fade_out);
+                    fab_report.setVisibility(View.INVISIBLE);
+                    btn_state = 0;
+                }
+
+
+
+
+            }
+        });
+
+        fab_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Write.class);
+                startActivity(intent);
+            }
+        });
+
+
+        // ! 유기동물 제보 게시글 작성이랑 일반 글 작성은 처리해줘야 하는 방식이 다른 거 같아서 아예 글 작성이랑 분리해봤습니다 !
+        //  ex ) 제보 시 필수 입력 사항 : 제보자 이름 ,연락처 ,사진 등 -- > 관리자만 확인 가능하도록 처리
+        fab_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Animal_report.class);
                 startActivity(intent);
             }
         });

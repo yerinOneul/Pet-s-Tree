@@ -32,6 +32,7 @@
         <activity android:name=".GalleryActivity"/>
         <activity android:name=".certreq.CertRequestViewActivity"
             android:theme="@style/Theme.PetsTree.Titlebar" />
+        <activity android:name=".Animal_report"/>
 
     </application>
 

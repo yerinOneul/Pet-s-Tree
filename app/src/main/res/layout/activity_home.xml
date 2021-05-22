@@ -36,6 +36,30 @@
         android:layout_below="@+id/post_nav_bar"
         tools:listitem="@layout/item_post"/>
 
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/write_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/report_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/green"
+        android:src="@drawable/write"
+        android:visibility="invisible"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/report_btn"
+        android:layout_above="@id/plus_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:backgroundTint="@color/green"
+        android:src="@drawable/report"
+        android:visibility="invisible"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/plus_btn"
         android:layout_width="wrap_content"

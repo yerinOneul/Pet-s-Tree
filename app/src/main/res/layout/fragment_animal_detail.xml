@@ -21,12 +21,6 @@
         android:background="@color/browser_actions_divider_color"
         android:layout_gravity="center"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-    </LinearLayout>
     <TextView
         android:id="@+id/detail_state"
         android:layout_below="@+id/detail_image"
@@ -70,41 +64,52 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         />
-    <TextView
-        android:id="@+id/detail_sex"
-        android:layout_below="@+id/detail_state"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="35dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        />
 
-    <TextView
-        android:id="@+id/detail_weight"
-        android:layout_below="@+id/detail_state"
-        android:layout_toRightOf="@+id/detail_sex"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="35dp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/weightSum"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        />
+        android:orientation="horizontal"
+        android:layout_below="@+id/detail_state"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_centerHorizontal="true"
+        android:weightSum="3">
 
-    <TextView
-        android:id="@+id/detail_color"
-        android:layout_below="@+id/detail_state"
-        android:layout_toRightOf="@+id/detail_weight"
-        android:layout_alignBaseline="@+id/detail_weight"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        />
+        <TextView
+            android:id="@+id/detail_sex"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            />
+
+        <TextView
+            android:id="@+id/detail_weight"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            />
+
+        <TextView
+            android:id="@+id/detail_color"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_weight="1"
+            />
+
+
+
+    </LinearLayout>
+
 
     <View
-        android:layout_below="@id/detail_weight"
+        android:layout_below="@+id/weightSum"
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:layout_height="2dp"
@@ -113,9 +118,9 @@
 
     <TextView
         android:id="@+id/detail"
-        android:layout_below="@+id/detail_weight"
+        android:layout_below="@+id/weightSum"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
