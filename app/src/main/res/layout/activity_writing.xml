@@ -13,7 +13,7 @@
             android:spinnerMode="dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="10"/>
+            android:text="20dp"/>
 
         <EditText
             android:id="@+id/title"
@@ -21,13 +21,20 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="제목"
+            android:textSize="20dp"
             android:inputType="textPersonName" />
 
         <ImageButton
             android:id="@+id/image_btn"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:adjustViewBounds="true"
+            android:maxWidth="50dp"
+            android:maxHeight="50dp"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/design_default_color_background"
+            android:src="@drawable/image" />
 
         <LinearLayout
             android:id="@+id/contentsLayout"
@@ -37,6 +44,7 @@
 
             <include
                 layout="@layout/view_contents_edit_text"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
