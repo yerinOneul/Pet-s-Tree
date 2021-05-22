@@ -1,6 +1,7 @@
 package kr.ac.gachon.sw.petstree;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,34 +17,41 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
     private ArrayList<Write_Info> items;
     private Home activity;
+    private ClickListener mlistener;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView title, publisher, num_comments;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-
-            title = itemView.findViewById(R.id.post_title);
-            publisher = itemView.findViewById(R.id.post_author);
-            num_comments = itemView.findViewById(R.id.num_comments);
-        }
-    }
-
-    public PostListAdapter(Home activity, ArrayList<Write_Info> mitems){
+    public PostListAdapter(Home activity, ArrayList<Write_Info> mitems, ClickListener listener){
         items = mitems;
         this.activity = activity;
-
+        this.mlistener = listener;
     }
     @NonNull
     @Override
     public PostListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
-        ViewHolder viewHolder = new ViewHolder(itemView);
-
+        ViewHolder viewHolder = new ViewHolder(itemView, mlistener);
         return viewHolder;
     }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        TextView title, publisher, num_comments;
+        ClickListener listener;
+        public ViewHolder(View itemView, ClickListener listener) {
+            super(itemView);
+            title = itemView.findViewById(R.id.post_title);
+            publisher = itemView.findViewById(R.id.post_author);
+            num_comments = itemView.findViewById(R.id.num_comments);
+            this.listener = listener;
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onClick(v, getAdapterPosition());
+        }
+    }
+
 
     @Override
     public void onBindViewHolder(@NonNull PostListAdapter.ViewHolder viewHolder, int position) {
@@ -66,5 +74,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
         this.items = items;
     }
 
-
+    public interface ClickListener{
+        void onClick(View v, int position);
+    }
 }

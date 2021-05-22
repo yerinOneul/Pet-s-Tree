@@ -2,6 +2,7 @@ package kr.ac.gachon.sw.petstree;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Date;
 
+import kr.ac.gachon.sw.petstree.certreq.CertRequestViewActivity;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
 
-public class Home extends Fragment {
+public class Home extends Fragment implements PostListAdapter.ClickListener{
     public ArrayList<Write_Info> postArrayList = new ArrayList<>();
-    private PostListAdapter postListAdapter = new PostListAdapter(this, postArrayList);
+    private PostListAdapter postListAdapter = new PostListAdapter(this, postArrayList, this);
     private String TAG = "Home";
     private int board = -1;
     @Nullable
@@ -125,5 +127,13 @@ public class Home extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onClick(View v,int position) {
+        postArrayList.get(position);
+        Intent postView = new Intent(getActivity(), Post.class);
+        postView.putExtra("post_view", (Parcelable) postArrayList.get(position));
+        startActivity(postView);
     }
 }
