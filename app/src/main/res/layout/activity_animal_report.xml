@@ -1,6 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/report_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="※제목"
+            android:textSize="20dp"
+            android:inputType="textPersonName" />
+
+        <ImageButton
+            android:id="@+id/report_image_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:maxWidth="50dp"
+            android:maxHeight="50dp"
+            android:scaleType="fitCenter"
+            android:backgroundTint="@color/design_default_color_background"
+            android:src="@drawable/image" />
+
+        <LinearLayout
+            android:id="@+id/report_contentsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/report_sex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="성별"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/report_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="나이"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/report_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="특징"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/report_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="※발견 일시 (yyyy-mm-dd hh:mm)"
+                android:inputType="textMultiLine" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <EditText
+                    android:id="@+id/report_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="※발견 장소"
+                    android:layout_weight="4"
+                    android:inputType="textMultiLine" />
+
+                <ImageButton
+                    android:id="@+id/report_my_location"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:src="@drawable/my_location"
+                    android:background="@color/white"
+                    android:elevation="5dp"
+                    />
+
+            </LinearLayout>
+
+
+
+            <EditText
+                android:id="@+id/report_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="※제보자명 (홍길동)"
+                android:inputType="textMultiLine" />
+
+            <EditText
+                android:id="@+id/report_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="※제보자 연락처 (010-1234-1234)"
+                android:inputType="textMultiLine" />
+
+
+            <include
+                layout="@layout/view_contents_edit_text"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:hint="※ 표시 항목은 필수 기입 항목입니다."
+            android:layout_margin="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/report_cancel_btn"
+                android:layout_width="50dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="취소"/>
+
+            <Button
+                android:id="@+id/report_save_btn"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/green_light"
+                android:text="등록" />
+
+        </LinearLayout>
+        <include
+            layout="@layout/activity_loader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </LinearLayout>
+</ScrollView>
