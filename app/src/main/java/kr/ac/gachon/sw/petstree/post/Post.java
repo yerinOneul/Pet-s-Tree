@@ -69,20 +69,24 @@ public class Post extends AppCompatActivity {
 
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             // array의 index가 짝수이면 text, 홀수이면 image
+            //  ---> contents 내용이 firebase 주소로 시작하면 이미지, 아니면 text
             for (int i = 0; i < contents.size(); i++) {
-                if (i % 2 == 0) {
-                    EditText editText = new EditText(Post.this);
-                    editText.setLayoutParams(layoutParams);
-                    editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
-                    parent.addView(editText);
-                    editText.setText(contents.get(i));
-                }
-                else{
+                if (contents.get(i).startsWith("https://firebasestorage")) {
                     ImageView imageView = new ImageView(Post.this);
                     imageView.setLayoutParams(layoutParams);
                     parent.addView(imageView);
                     Glide.with(this).load(contents.get(i)).override(1000).into(imageView);
                 }
+                else{
+                    //custom view 만들어서 수정해볼게요
+                    EditText editText = new EditText(Post.this);
+                    editText.setLayoutParams(layoutParams);
+                    editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
+                    parent.addView(editText);
+                    editText.setText(contents.get(i));
+
+                }
+
             }
         }
     }
