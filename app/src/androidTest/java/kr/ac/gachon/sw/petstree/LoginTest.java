@@ -46,6 +46,13 @@ import static org.hamcrest.Matchers.is;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class LoginTest {
+    // 로그인 정보 입력
+    private String ID = ""; // 이메일 아이디
+    private String PW = ""; // 비밀번호
+
+    // 테스트 정보 입력
+    private String name = ""; // 닉네임
+    private String type = ""; // 일반, 전문가
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -80,7 +87,7 @@ public class LoginTest {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("mhcho98@gmail.com"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText(ID), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.login_password),
@@ -90,7 +97,7 @@ public class LoginTest {
                                         0),
                                 3),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("mhcho98"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText(PW), closeSoftKeyboard());
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.login_btn), withText("로그인"),
@@ -105,16 +112,16 @@ public class LoginTest {
         Thread.sleep(5000); // 로그인 로딩
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.navi_header_user_nickname), withText("minhyeok"),
+                allOf(withId(R.id.navi_header_user_nickname), withText(name),
                         withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class))),
                         isDisplayed()));
-        textView.check(matches(withText("minhyeok")));
+        textView.check(matches(withText(name)));
 
         ViewInteraction textView3 = onView(
-                allOf(withId(R.id.navi_header_user_type), withText("일반"),
+                allOf(withId(R.id.navi_header_user_type), withText(type),
                         withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class))),
                         isDisplayed()));
-        textView3.check(matches(withText("일반")));
+        textView3.check(matches(withText(type)));
     }
 
     @After
