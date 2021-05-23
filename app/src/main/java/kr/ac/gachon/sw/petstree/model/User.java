@@ -18,9 +18,7 @@ public class User {
     // Admin 여부
     private boolean admin;
 
-    public User() {
-
-    }
+    public User() { }
 
     public User(String userNickName, boolean certOk, int userType) {
         this.userNickName = userNickName;

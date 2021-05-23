@@ -1,7 +1,5 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.post;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,30 +9,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+
+import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHolder> {
-
     private ArrayList<Write_Info> items;
-    private Home activity;
     private ClickListener mlistener;
 
-    public PostListAdapter(Home activity, ArrayList<Write_Info> mitems, ClickListener listener){
-        items = mitems;
-        this.activity = activity;
+    public PostListAdapter(ClickListener listener){
+        items = new ArrayList<>();
         this.mlistener = listener;
     }
+
     @NonNull
     @Override
     public PostListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false);
         ViewHolder viewHolder = new ViewHolder(itemView, mlistener);
         return viewHolder;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
         TextView title, publisher, num_comments;
         ClickListener listener;
         public ViewHolder(View itemView, ClickListener listener) {
@@ -55,13 +51,10 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull PostListAdapter.ViewHolder viewHolder, int position) {
-
         Write_Info item = items.get(position);
-
         viewHolder.title.setText(item.getTitle());
-        viewHolder.publisher.setText(item.getPublisher());
+        viewHolder.publisher.setText(item.getPublisherNick());
         viewHolder.num_comments.setText(String.valueOf(item.getNum_comments()));
-
     }
 
 
@@ -70,8 +63,17 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
         return items.size();
     }
 
-    public void setItems(ArrayList<Write_Info> items) {
-        this.items = items;
+    public void setItems(ArrayList<Write_Info> list) {
+        items = list;
+        this.notifyDataSetChanged();
+    }
+
+    public void addItem(Write_Info item) {
+        items.add(item);
+    }
+
+    public Write_Info getItem(int position) {
+        return items.get(position);
     }
 
     public interface ClickListener{

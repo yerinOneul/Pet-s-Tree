@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.animal;
 
 //유기동물 api 활용 시 필요한 url을 만드는 class
 // bgnde, endde, upkind, kind : 검색 시작일, 검색 종료일, 축종, 품종

@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.post;
 
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.CertRequest;
 import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
@@ -55,7 +56,9 @@ public class Post extends AppCompatActivity {
         if (getIntent().hasExtra("post_view")) {
             write_info = getIntent().getParcelableExtra("post_view");
             edTitle.setText(write_info.getTitle());
-            tvPublisher.setText(write_info.getPublisher());
+            tvPublisher.setText(write_info.getPublisherNick());
+
+            Log.d("dd", "dd " + write_info.getCreateAt());
             //날짜 형식 변환
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
             String date = simpleDateFormat.format(write_info.getCreateAt());

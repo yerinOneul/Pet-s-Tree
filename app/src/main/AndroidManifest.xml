@@ -24,16 +24,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login"/>
-        <activity android:name=".SignUp"/>
-        <activity android:name=".Write"
+        <activity android:name=".login.Login"/>
+        <activity android:name=".login.SignUp"/>
+        <activity android:name=".post.Write"
             android:theme="@style/Theme.PetsTree.Titlebar" />
         <activity android:name=".certreq.ExpectCertActivity" />
-        <activity android:name=".GalleryActivity"/>
         <activity android:name=".certreq.CertRequestViewActivity"
             android:theme="@style/Theme.PetsTree.Titlebar" />
-        <activity android:name=".Animal_report"/>
-        <activity android:name=".Post"/>
+        <activity android:name=".animal.Animal_report"/>
+        <activity android:name=".post.Post"/>
 
 
     </application>

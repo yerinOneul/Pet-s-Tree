@@ -3,6 +3,8 @@ package kr.ac.gachon.sw.petstree.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,7 +12,9 @@ public class Write_Info implements Parcelable {
     private String title;
     private ArrayList<String> contents;
     private String publisher;
-    private Date createdAt;
+    // 유저 닉네임 (DB엔 업로드 X)
+    private String publisherNick;
+    private Date createAt;
     private int num_comments;
 
     /**
@@ -24,11 +28,13 @@ public class Write_Info implements Parcelable {
      */
     private int boardType;
 
-    public Write_Info(String title, ArrayList<String> contents, String publisher, Date createdAt, int boardType, int num_comments){
+    public Write_Info() { }
+
+    public Write_Info(String title, ArrayList<String> contents, String publisher, Date createAt, int boardType, int num_comments){
         this.title = title;
         this.contents = contents;
         this.publisher = publisher;
-        this.createdAt = createdAt;
+        this.createAt = createAt;
         this.boardType = boardType;
         this.num_comments = num_comments;
     }
@@ -37,7 +43,8 @@ public class Write_Info implements Parcelable {
         title = in.readString();
         contents = in.createStringArrayList();
         publisher = in.readString();
-        createdAt = (Date) in.readSerializable();
+        publisherNick = in.readString();
+        createAt = (Date) in.readSerializable();
         num_comments = in.readInt();
         boardType = in.readInt();
     }
@@ -60,12 +67,20 @@ public class Write_Info implements Parcelable {
     public void setContents(ArrayList<String> contents){ this.contents = contents;}
     public String getPublisher(){ return this.publisher; }
     public void setPublisher(String publisher){ this.publisher = publisher;}
-    public Date getCreateAt(){ return this.createdAt; }
-    public void setCreateAt(Date publisher){ this.createdAt = createdAt;}
+    public Date getCreateAt(){ return this.createAt; }
+    public void setCreateAt(Date createAt){ this.createAt = createAt;}
     public int getBoardType() { return boardType; }
     public void setBoardType(int boardType) { this.boardType = boardType; }
     public int getNum_comments()  { return num_comments; }
     public void setNum_comments(int boardType) { this.boardType = boardType; }
+
+    @Exclude
+    public String getPublisherNick() {
+        return publisherNick;
+    }
+    public void setPublisherNick(String publisherNick) {
+        this.publisherNick = publisherNick;
+    }
 
     @Override
     public int describeContents() {
@@ -77,7 +92,8 @@ public class Write_Info implements Parcelable {
         dest.writeString(title);
         dest.writeStringList(contents);
         dest.writeString(publisher);
-        dest.writeSerializable(createdAt);
+        dest.writeString(publisherNick);
+        dest.writeSerializable(createAt);
         dest.writeInt(num_comments);
         dest.writeInt(boardType);
     }

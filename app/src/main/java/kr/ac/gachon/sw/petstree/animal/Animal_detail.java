@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.animal;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -29,6 +29,8 @@ import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import kr.ac.gachon.sw.petstree.R;
 
 public class Animal_detail extends Fragment {
     private View root;

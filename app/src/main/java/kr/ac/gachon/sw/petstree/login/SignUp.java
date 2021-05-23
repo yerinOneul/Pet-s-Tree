@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.login;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
+import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.certreq.ExpectCertActivity;
 import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;

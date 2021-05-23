@@ -21,8 +21,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import kr.ac.gachon.sw.petstree.animal.Animal_info;
 import kr.ac.gachon.sw.petstree.certreq.ExpectReqFragment;
+import kr.ac.gachon.sw.petstree.login.Login;
 import kr.ac.gachon.sw.petstree.model.User;
+import kr.ac.gachon.sw.petstree.post.Home;
 import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;
 
@@ -68,31 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Navigation Drawer Action 설정
         setNavAction();
-
-        // 메뉴 이쁘게 만들려고 메뉴 리소스 안 쓰고 커스텀했습니다
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                item.setCheckable(false);
-//                mDrawerLayout.closeDrawers();
-//
-//                int id = item.getItemId();
-//                if (id == R.id.nav_login) {
-//                    Intent intent = new Intent(getApplicationContext(), Login.class);
-//                    startActivity(intent);
-//                }
-//                else if (id == R.id.nav_community) {
-//                    getSupportFragmentManager().beginTransaction().replace(R.id.home_fragment, new Home());
-//                }
-//                else if (id == R.id.nav_abandoned) {
-//                    Intent intent = new Intent(getApplicationContext(), Animal_info.class);
-//                    startActivity(intent);
-//                }
-//                return true;
-//            }
-//        });
-
     }
 
     /**

@@ -1,11 +1,9 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.animal;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 

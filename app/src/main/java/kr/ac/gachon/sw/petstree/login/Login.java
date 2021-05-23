@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import kr.ac.gachon.sw.petstree.MainActivity;
+import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;

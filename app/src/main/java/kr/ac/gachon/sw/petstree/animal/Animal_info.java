@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.animal;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -23,6 +23,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import kr.ac.gachon.sw.petstree.MainActivity;
+import kr.ac.gachon.sw.petstree.R;
 
 public class Animal_info extends Fragment {
     View root;

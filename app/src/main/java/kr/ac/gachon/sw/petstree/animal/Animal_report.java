@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.animal;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,15 +9,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +41,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
+import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
 
 public class Animal_report extends AppCompatActivity {

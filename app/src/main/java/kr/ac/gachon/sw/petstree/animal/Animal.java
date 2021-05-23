@@ -1,4 +1,4 @@
-package kr.ac.gachon.sw.petstree;
+package kr.ac.gachon.sw.petstree.animal;
 
 //유기동물 recylerview에 표시될 정보를 저장하는 class
 //image : 유기동물 사진
