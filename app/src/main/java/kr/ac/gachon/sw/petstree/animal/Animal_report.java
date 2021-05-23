@@ -64,10 +64,9 @@ public class Animal_report extends AppCompatActivity {
         cancel_btn = findViewById(R.id.report_cancel_btn);
         myLoc_btn = findViewById(R.id.report_my_location);
         image_btn = findViewById(R.id.report_image_btn);
-        parent = findViewById(R.id.contentsLayout);
+        parent = findViewById(R.id.report_contentsLayout);
         loaderLayout = findViewById(R.id.loaderLayout);
 
-        //actionBar..
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -161,14 +160,16 @@ public class Animal_report extends AppCompatActivity {
         final String name = ((EditText)findViewById(R.id.report_name)).getText().toString();
         final String phone = ((EditText)findViewById(R.id.report_phone)).getText().toString();
 
-
-        if(title.length()>0 && time.length() > 0 && location.length() >0 && name.length() > 0 && phone.length() >0 ){
+        // 이미지 넣지 않아도 게시글 저장되게 하기  ---> 유기동물 제보 시 사진 필수
+        if(pathList.size() == 0){
+            startToast("해당 동물의 사진을 업로드 해주세요.");
+        }
+        else if(title.length()>0 && time.length() > 0 && location.length() >0 && name.length() > 0 && phone.length() >0 ){
             loaderLayout.setVisibility(View.VISIBLE);
             ArrayList<String> contentsList = new ArrayList<>();
             user = FirebaseAuth.getInstance().getCurrentUser();
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReference();
-            /////여기서 오류 발생
             for(int i = 0; i < parent.getChildCount(); i++){
                 View view = parent.getChildAt(i);
                 if(view instanceof EditText){
@@ -177,7 +178,7 @@ public class Animal_report extends AppCompatActivity {
                         contentsList.add(text);
                     }
                 }
-                else {
+                else if (view instanceof ImageView){
                     contentsList.add(pathList.get(pathCount));
                     final StorageReference imageRef = storageRef.child("posts/" + user.getUid() + "/" + pathCount + ".jpg");
                     try{
@@ -217,12 +218,8 @@ public class Animal_report extends AppCompatActivity {
                     pathCount++;
                 }
             }
-            // 이미지 넣지 않아도 게시글 저장되게 하기  ---> 유기동물 제보 시 사진 필수.,. 유기동물 제보 -> type  = 5
-            if(pathList.size() == 0){
-                Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), 5, 0);
-                storeUpload(write_Info);
-            }
-        }else {
+        }
+        else {
             startToast("필수 기입 항목을 입력해주세요.");
         }
     }
