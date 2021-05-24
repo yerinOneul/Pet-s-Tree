@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 기본 Fragment Set
-        getSupportFragmentManager().beginTransaction().add(R.id.fl_main, new Home()).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fl_main, Home.getInstance(-1)).commit();
 
         // 유저 정보 설정
         setUserInfo();
@@ -87,12 +87,9 @@ public class MainActivity extends AppCompatActivity {
         notice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 0);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(0);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 
@@ -102,72 +99,54 @@ public class MainActivity extends AppCompatActivity {
         community.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 1);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(1);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 
         communityQnA.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 2);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(2);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 
         communityShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 3);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(3);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 
         communityCounseling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 4);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(4);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 
         abandonedReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 5);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(5);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 
         errorReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                mDrawerLayout.closeDrawers();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", 6);
-                home.setArguments(bundle);
+                Fragment home = Home.getInstance(6);
                 replaceFragment(home);
+                mDrawerLayout.closeDrawers();
             }
         });
 

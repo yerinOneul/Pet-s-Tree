@@ -11,6 +11,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,10 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import kr.ac.gachon.sw.petstree.post.Post;
 import kr.ac.gachon.sw.petstree.R;
@@ -43,6 +46,15 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
     private int board = -1;
     private String[] boardList = {"공지사항", "반려동물 일상", "반려동물 관련 질문", "정보 공유", "상담", "유기동물 제보", "오류 제보"};
     private int btn_state = 0;
+
+    public static Home getInstance(int boardType) {
+        Home home = new Home();
+        Bundle bundle = new Bundle();
+        bundle.putInt("Type", boardType);
+        home.setArguments(bundle);
+        return home;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable  ViewGroup container,  Bundle savedInstanceState) {
@@ -57,8 +69,6 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
         // 게시글 목록 생성
         RecyclerView postList = root.findViewById(R.id.recycler_post_list);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setReverseLayout(true);
-        llm.setStackFromEnd(true); // 먼저 생성된 포스트가 가장 밑으로
         postList.setLayoutManager(llm);
         postListAdapter = new PostListAdapter(this);
         postList.setAdapter(postListAdapter);
@@ -70,44 +80,51 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
         showAllPosts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment home = new Home();
-                Bundle bundle = new Bundle();
-                bundle.putInt("Type", -1);
-                home.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.fl_main, home).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_main, Home.getInstance(-1)).addToBackStack(null).commit();
             }
         });
 
         // 초기 화면. navigation bar 선택하지 않고 들어올 때
         TextView boardName = root.findViewById(R.id.board_name);
+        Log.d(TAG, "Board Type " + board);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         if(board == -1) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("posts")
+                    .orderBy("createAt", Query.Direction.DESCENDING)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                setPostData(task);
+                                if(task.getResult().isEmpty()) {
+                                    loadingDialog.dismiss();
+                                }
+                                else setPostData(task);
                             } else {
+                                Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "Error getting documents:", task.getException());
+                                loadingDialog.dismiss();
                             }
                         }
                     });
             boardName.setText("전체글");
-        }
-        else{
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+        } else {
             db.collection("posts")
                     .whereEqualTo("boardType", board)
+                    .orderBy("createAt", Query.Direction.DESCENDING)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                setPostData(task);
+                                if(task.getResult().isEmpty()) {
+                                    loadingDialog.dismiss();
+                                }
+                                else setPostData(task);
                             } else {
+                                Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "Error getting documents:", task.getException());
+                                loadingDialog.dismiss();
                             }
                         }
                     });
@@ -127,7 +144,6 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if ( btn_state == 0){
                     //버튼 나타나기
                     fab.startAnimation(rotate);
@@ -186,31 +202,9 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
 
             Log.d(TAG, doc.getId() + "=>" + doc.getData());
             Write_Info writeInfo = doc.toObject(Write_Info.class);
-
-            Log.d(TAG, "date " + writeInfo.getCreateAt());
-
-            int currentI = i;
-            Firestore.getUserData(writeInfo.getPublisher())
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> userTask) {
-                            if(userTask.isSuccessful()) {
-                                Log.d("Home", "UserTask Successful");
-                                User user = userTask.getResult().toObject(User.class);
-                                writeInfo.setPublisherNick(user.getUserNickName());
-                                writeInfos.add(writeInfo);
-                            }
-                            else {
-                                Log.e("Home", "Get Userdata Error!", userTask.getException());
-                            }
-
-                            if(currentI == task.getResult().getDocuments().size() - 1) {
-                                postListAdapter.setItems(writeInfos);
-                                postListAdapter.notifyDataSetChanged();
-                                loadingDialog.dismiss();
-                            }
-                        }
-                    });
+            writeInfos.add(writeInfo);
+            postListAdapter.setItems(writeInfos);
+            loadingDialog.dismiss();
         }
     }
 }

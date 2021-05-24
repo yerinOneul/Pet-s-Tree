@@ -8,10 +8,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 import kr.ac.gachon.sw.petstree.R;
+import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
+import kr.ac.gachon.sw.petstree.util.Firestore;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHolder> {
     private ArrayList<Write_Info> items;
@@ -53,7 +60,23 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
     public void onBindViewHolder(@NonNull PostListAdapter.ViewHolder viewHolder, int position) {
         Write_Info item = items.get(position);
         viewHolder.title.setText(item.getTitle());
-        viewHolder.publisher.setText(item.getPublisherNick());
+
+        Firestore.getUserData(item.getPublisher())
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            User userData = task.getResult().toObject(User.class);
+                            item.setPublisherNick(userData.getUserNickName());
+                            viewHolder.publisher.setText(item.getPublisherNick());
+                        }
+                        else {
+                            item.setPublisherNick("Unknown");
+                            viewHolder.publisher.setText(item.getPublisherNick());
+                        }
+                    }
+                });
+
         viewHolder.num_comments.setText(String.valueOf(item.getNum_comments()));
     }
 
@@ -65,7 +88,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
 
     public void setItems(ArrayList<Write_Info> list) {
         items = list;
-        this.notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     public void addItem(Write_Info item) {

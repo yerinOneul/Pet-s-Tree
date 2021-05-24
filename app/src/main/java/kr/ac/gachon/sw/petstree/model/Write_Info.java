@@ -8,7 +8,7 @@ import com.google.firebase.firestore.Exclude;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Write_Info implements Parcelable {
+public class Write_Info implements Parcelable, Comparable {
     private String title;
     private ArrayList<String> contents;
     private String publisher;
@@ -96,5 +96,10 @@ public class Write_Info implements Parcelable {
         dest.writeSerializable(createAt);
         dest.writeInt(num_comments);
         dest.writeInt(boardType);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return -this.getCreateAt().compareTo(((Write_Info) o).getCreateAt());
     }
 }
