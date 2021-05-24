@@ -11,6 +11,10 @@
         layout="@layout/toolbar"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="81dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/green_light" />
 
     <LinearLayout
         android:layout_width="match_parent"
