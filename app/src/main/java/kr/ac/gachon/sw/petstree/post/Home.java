@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +41,7 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
     private String TAG = "Home";
     private LoadingDialog loadingDialog;
     private int board = -1;
+    private String[] boardList = {"공지사항", "반려동물 일상", "반려동물 관련 질문", "정보 공유", "상담", "유기동물 제보", "오류 제보"};
     private int btn_state = 0;
     @Nullable
     @Override
@@ -62,7 +65,21 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
 
         loadingDialog.show();
 
+        // 전체글 보기
+        TextView showAllPosts = root.findViewById(R.id.show_all_posts);
+        showAllPosts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment home = new Home();
+                Bundle bundle = new Bundle();
+                bundle.putInt("Type", -1);
+                home.setArguments(bundle);
+                getFragmentManager().beginTransaction().replace(R.id.fl_main, home).addToBackStack(null).commit();
+            }
+        });
+
         // 초기 화면. navigation bar 선택하지 않고 들어올 때
+        TextView boardName = root.findViewById(R.id.board_name);
         if(board == -1) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection("posts")
@@ -77,6 +94,7 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
                             }
                         }
                     });
+            boardName.setText("전체글");
         }
         else{
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -93,6 +111,7 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
                             }
                         }
                     });
+            boardName.setText(boardList[board]);
         }
 
         FloatingActionButton fab = root.findViewById(R.id.plus_btn);

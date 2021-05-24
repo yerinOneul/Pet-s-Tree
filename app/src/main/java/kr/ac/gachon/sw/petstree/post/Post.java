@@ -62,7 +62,8 @@ public class Post extends AppCompatActivity {
             //날짜 형식 변환
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
             String date = simpleDateFormat.format(write_info.getCreateAt());
-            tvTime.setText(date);
+            date = date.substring(5,date.length()-3);
+            tvTime.setText(date.replace('.', '/'));
 
             contents = write_info.getContents();
             Log.w(LOG_TAG, String.valueOf(contents.size()));
@@ -74,12 +75,13 @@ public class Post extends AppCompatActivity {
                 if (contents.get(i).startsWith("https://firebasestorage")) {
                     ImageView imageView = new ImageView(Post.this);
                     imageView.setLayoutParams(layoutParams);
+                    imageView.setPadding(0,25,0,25);
                     parent.addView(imageView);
                     Glide.with(this).load(contents.get(i)).override(1000).into(imageView);
                 }
                 else{
                     //custom view 만들어서 수정해볼게요
-                    EditText editText = new EditText(Post.this);
+                    TextView editText = new TextView(Post.this);
                     editText.setLayoutParams(layoutParams);
                     editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
                     parent.addView(editText);

@@ -12,21 +12,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="17dp"
-            android:text = "전체글"/>
+            android:layout_marginStart="10dp"
+            android:text="# "
+            android:textSize="17sp"/>
         <TextView
+            android:id="@+id/board_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:textSize="17dp"
-            android:text="유기동물"/>
+            android:layout_weight="100"
+            android:textSize="17sp"
+            android:text="전체글"/>
         <TextView
+            android:id="@+id/show_all_posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
             android:padding="10dp"
             android:textSize="17dp"
-            android:text="공지사항"/>
+            android:text="전체글 보기"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
