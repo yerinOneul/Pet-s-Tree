@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
             android:layout_marginStart="15dp"
-            android:text="author"
             />
 
         <LinearLayout
