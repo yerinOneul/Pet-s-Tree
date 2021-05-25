@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Write_Info implements Parcelable, Comparable {
+    private String docId;
     private String title;
     private ArrayList<String> contents;
     private String publisher;
@@ -47,6 +48,7 @@ public class Write_Info implements Parcelable, Comparable {
         createAt = (Date) in.readSerializable();
         num_comments = in.readInt();
         boardType = in.readInt();
+        docId = in.readString();
     }
 
     public static final Creator<Write_Info> CREATOR = new Creator<Write_Info>() {
@@ -82,6 +84,15 @@ public class Write_Info implements Parcelable, Comparable {
         this.publisherNick = publisherNick;
     }
 
+    @Exclude
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -96,6 +107,7 @@ public class Write_Info implements Parcelable, Comparable {
         dest.writeSerializable(createAt);
         dest.writeInt(num_comments);
         dest.writeInt(boardType);
+        dest.writeString(docId);
     }
 
     @Override

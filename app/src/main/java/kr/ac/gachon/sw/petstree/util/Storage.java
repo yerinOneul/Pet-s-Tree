@@ -18,6 +18,11 @@ public class Storage {
     public static StorageReference expectCertRef = getStorageInstance().getReference().child("expectCert");
 
     /**
+     * 게시글 이미지 저장 폴더 Reference
+     */
+    public static StorageReference postRef = getStorageInstance().getReference().child("posts");
+
+    /**
      * Storage Instance를 가져온다
      *
      * @return FirebaseStorage Instance

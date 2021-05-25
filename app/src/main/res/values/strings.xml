@@ -4,6 +4,8 @@
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
     <string name="nologin">비회원</string>
+    <string name="delete">삭제</string>
+    <string name="warning">경고</string>
     <string name="backpressed">\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.</string>
 
     <string name="error">에러가 발생했습니다. 다시 시도해주세요.</string>
@@ -44,6 +46,9 @@
     <string name="certreqview_decline">거절</string>
     <string name="certreqview_accept">승인</string>
     <string name="certreqview_success">성공적으로 확인 여부가 업데이트 되었습니다.</string>
+
+    <string name="post_deletewarning_msg">정말 삭제하시겠습니까?\n삭제가 완료되면 복구할 수 없습니다!</string>
+    <string name="post_deletecomplete">게시글 삭제가 완료되었습니다.</string>
 
     <string-array name="userclass">
         <item>일반</item>

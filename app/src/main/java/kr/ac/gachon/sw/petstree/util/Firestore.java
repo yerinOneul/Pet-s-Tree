@@ -1,19 +1,16 @@
 package kr.ac.gachon.sw.petstree.util;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Date;
-import java.util.HashMap;
-
 import kr.ac.gachon.sw.petstree.model.CertRequest;
 import kr.ac.gachon.sw.petstree.model.Comment;
 import kr.ac.gachon.sw.petstree.model.User;
+import kr.ac.gachon.sw.petstree.model.Write_Info;
 
 public class Firestore {
     /**
@@ -129,5 +126,27 @@ public class Firestore {
      */
     public static Query getExpectReqData() {
         return getFirestoreInstance().collection("certreq");
+    }
+
+    /**
+     * 포스트 삭제
+     * @param postId 삭제할 Post ID
+     * @return Task<Void>
+     */
+    public static Task<Void> removePost(String postId) {
+        return getFirestoreInstance().collection("posts").document(postId).delete();
+    }
+
+    /**
+     * 게시글 작성
+     * @param writeinfo 게시글 정보
+     * @return Task<Void>
+    */
+    public static Task<Void> writePost(Write_Info writeinfo) {
+        return getFirestoreInstance().collection("posts").document().set(writeinfo);
+    }
+
+    public static DocumentReference createEmptyPostDoc() {
+        return getFirestoreInstance().collection("posts").document();
     }
 }

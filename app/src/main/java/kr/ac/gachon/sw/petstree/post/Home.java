@@ -199,9 +199,9 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
 
         for(int i = 0; i < task.getResult().getDocuments().size(); i++) {
             DocumentSnapshot doc = task.getResult().getDocuments().get(i);
-
             Log.d(TAG, doc.getId() + "=>" + doc.getData());
             Write_Info writeInfo = doc.toObject(Write_Info.class);
+            writeInfo.setDocId(doc.getId());
             writeInfos.add(writeInfo);
             postListAdapter.setItems(writeInfos);
             loadingDialog.dismiss();

@@ -26,8 +26,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -46,6 +48,7 @@ import java.util.Date;
 
 import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
+import kr.ac.gachon.sw.petstree.util.Firestore;
 
 public class Write extends AppCompatActivity {
     private ActionBar actionBar;
@@ -166,6 +169,8 @@ public class Write extends AppCompatActivity {
     }
 
     private void storageUpload(){
+        final DocumentReference docRef = Firestore.createEmptyPostDoc();
+
         final String title = ((EditText)findViewById(R.id.title)).getText().toString();
         //final String contents = ((EditText)findViewById(R.id.contents)).getText().toString();
 
@@ -186,7 +191,7 @@ public class Write extends AppCompatActivity {
                 }
                 else {
                     contentsList.add(pathList.get(pathCount));
-                    final StorageReference imageRef = storageRef.child("posts/" + user.getUid() + "/" + pathCount + ".jpg");
+                    final StorageReference imageRef = storageRef.child("posts/" + docRef.getId() + "/" + pathCount + ".jpg");
                     try{
                         InputStream stream = new FileInputStream(new File(pathList.get(pathCount)));
 
@@ -210,8 +215,7 @@ public class Write extends AppCompatActivity {
                                             // 업로드 완료
                                             // BoardType은 Write_Info 참조 (0 ~ 6)
                                             Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition(), 0);
-                                            storeUpload(write_Info);
-
+                                            storeUpload(docRef, write_Info);
                                         }
                                     }
                                 });
@@ -227,42 +231,33 @@ public class Write extends AppCompatActivity {
             // 이미지 넣지 않아도 게시글 저장되게 하기
             if(pathList.size() == 0){
                 Write_Info write_Info = new Write_Info(title, contentsList, user.getUid(), new Date(), spinner.getSelectedItemPosition(), 0);
-                storeUpload(write_Info);
+                storeUpload(docRef, write_Info);
             }
         }else {
             startToast("내용을 입력해주세요.");
         }
     }
 
-    private void storeUpload(Write_Info write_info){
+    private void storeUpload(DocumentReference docRef, Write_Info write_info){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("posts").add(write_info)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        db.collection("posts").document(docRef.getId()).set(write_info)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference){
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                        loaderLayout.setVisibility(View.GONE);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e){
-                        Log.w(TAG, "Error adding document", e);
-                        loaderLayout.setVisibility(View.GONE);
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "DocumentSnapshot written with ID: " + docRef.getId());
+                            loaderLayout.setVisibility(View.GONE);
+                            finish();
+                        }
+                        else {
+                            Log.w(TAG, "Error adding document", task.getException());
+                            loaderLayout.setVisibility(View.GONE);
+                        }
                     }
                 });
-
     }
 
     private void startToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
-
-    private void myStartActivity(Class c, String media){
-        Intent intent = new Intent(this, c);
-        intent.putExtra("media", media);
-        startActivityForResult(intent, 0);
-    }
-
 }
