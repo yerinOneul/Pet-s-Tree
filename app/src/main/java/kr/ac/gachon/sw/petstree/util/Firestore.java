@@ -80,12 +80,10 @@ public class Firestore {
      * 1 - 반려동물 일상 게시판
      * 2 - 반려동물 관련 질문 게시판
      * 3 - 정보 공유 게시판
-     * 4 - 반려동물 관련 질문 게시판
-     * 5 - 정보 공유 게시판
-     * 6 - 상담 게시판
+     * 4 - 상담 게시판
      * 상담 게시판에 있는 본인 작성 글 확인은 getUserCounselingPostData 사용 요망 - 전문가가 글 불러올때만 이 명령어 사용
-     * 7 - 유기동물 제보
-     * 8 - 오류 제보
+     * 5 - 유기동물 제보
+     * 6 - 오류 제보
      * @return Task<QuerySnapshot>
      */
     public static Task<QuerySnapshot> getBoardData(int boardType) {
@@ -98,7 +96,7 @@ public class Firestore {
      * @return Task<QuerySnapshot>
      */
     public static Task<QuerySnapshot> getUserCounselingPostData(String userId) {
-        return getFirestoreInstance().collection("posts").whereEqualTo("boardType", 6).whereEqualTo("publisher", userId).get();
+        return getFirestoreInstance().collection("posts").whereEqualTo("boardType", 4).whereEqualTo("publisher", userId).orderBy("createAt", Query.Direction.DESCENDING).get();
     }
 
     /**

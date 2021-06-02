@@ -36,6 +36,7 @@ import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.animal.Animal_report;
 import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
+import kr.ac.gachon.sw.petstree.util.Auth;
 import kr.ac.gachon.sw.petstree.util.Firestore;
 import kr.ac.gachon.sw.petstree.util.LoadingDialog;
 
@@ -46,6 +47,7 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
     private int board = -1;
     private String[] boardList = {"공지사항", "반려동물 일상", "반려동물 관련 질문", "정보 공유", "상담", "유기동물 제보", "오류 제보"};
     private int btn_state = 0;
+    private User user;
 
     public static Home getInstance(int boardType) {
         Home home = new Home();
@@ -84,51 +86,23 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
             }
         });
 
-        // 초기 화면. navigation bar 선택하지 않고 들어올 때
-        TextView boardName = root.findViewById(R.id.board_name);
-        Log.d(TAG, "Board Type " + board);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        if(board == -1) {
-            db.collection("posts")
-                    .orderBy("createAt", Query.Direction.DESCENDING)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        if(Auth.getCurrentUser() != null) {
+            Firestore.getUserData(Auth.getCurrentUser().getUid())
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if(task.getResult().isEmpty()) {
-                                    loadingDialog.dismiss();
-                                }
-                                else setPostData(task);
-                            } else {
-                                Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "Error getting documents:", task.getException());
-                                loadingDialog.dismiss();
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if(task.isSuccessful()) {
+                                user = task.getResult().toObject(User.class);
+                                setAdapter(root);
+                            }
+                            else {
+                                user = null;
                             }
                         }
                     });
-            boardName.setText("전체글");
-        } else {
-            db.collection("posts")
-                    .whereEqualTo("boardType", board)
-                    .orderBy("createAt", Query.Direction.DESCENDING)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if(task.getResult().isEmpty()) {
-                                    loadingDialog.dismiss();
-                                }
-                                else setPostData(task);
-                            } else {
-                                Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, "Error getting documents:", task.getException());
-                                loadingDialog.dismiss();
-                            }
-                        }
-                    });
-            boardName.setText(boardList[board]);
+        }
+        else {
+            setAdapter(root);
         }
 
         FloatingActionButton fab = root.findViewById(R.id.plus_btn);
@@ -168,8 +142,13 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
         fab_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Write.class);
-                startActivity(intent);
+                if(Auth.getCurrentUser() != null) {
+                    Intent intent = new Intent(getContext(), Write.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -179,8 +158,13 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
         fab_report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), Animal_report.class);
-                startActivity(intent);
+                if(Auth.getCurrentUser() != null) {
+                    Intent intent = new Intent(getContext(), Animal_report.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -194,6 +178,107 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
         startActivity(postView);
     }
 
+    private void setAdapter(View root) {
+        // 초기 화면. navigation bar 선택하지 않고 들어올 때
+        TextView boardName = root.findViewById(R.id.board_name);
+        Log.d(TAG, "Board Type " + board);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if(board == -1) {
+            db.collection("posts")
+                    .orderBy("createAt", Query.Direction.DESCENDING)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if(task.getResult().isEmpty()) {
+                                    loadingDialog.dismiss();
+                                }
+                                else setPostData(task);
+                            } else {
+                                Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "Error getting documents:", task.getException());
+                                loadingDialog.dismiss();
+                            }
+                        }
+                    });
+            boardName.setText("전체글");
+        } else if(board == 4) {
+            // 비로그인
+            if(user == null) {
+                loadingDialog.dismiss();
+                Toast.makeText(getContext(), "상담 게시판은 로그인한 사용자만 볼 수 있습니다.", Toast.LENGTH_SHORT).show();
+                getFragmentManager().beginTransaction().replace(R.id.fl_main, Home.getInstance(-1)).addToBackStack(null).commit();
+            }
+            // 일반 유저
+            else if(user.getUserType() == 0) {
+                // 본인것만
+                Firestore.getUserCounselingPostData(Auth.getCurrentUser().getUid())
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if (task.getResult().isEmpty()) {
+                                        loadingDialog.dismiss();
+                                    } else setPostData(task);
+                                } else {
+                                    Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "Error getting documents:", task.getException());
+                                    loadingDialog.dismiss();
+                                }
+                            }
+                        });
+            }
+            // 전문가 유저
+            else {
+                // 모든 게시물 전체
+                db.collection("posts")
+                        .whereEqualTo("boardType", board)
+                        .orderBy("createAt", Query.Direction.DESCENDING)
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    if(task.getResult().isEmpty()) {
+                                        loadingDialog.dismiss();
+                                    }
+                                    else setPostData(task);
+                                } else {
+                                    Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, "Error getting documents:", task.getException());
+                                    loadingDialog.dismiss();
+                                }
+                            }
+                        });
+            }
+            boardName.setText(boardList[board]);
+        }
+        else {
+            db.collection("posts")
+                    .whereEqualTo("boardType", board)
+                    .orderBy("createAt", Query.Direction.DESCENDING)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if(task.getResult().isEmpty()) {
+                                    loadingDialog.dismiss();
+                                }
+                                else setPostData(task);
+                            } else {
+                                Toast.makeText(getContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "Error getting documents:", task.getException());
+                                loadingDialog.dismiss();
+                            }
+                        }
+                    });
+            boardName.setText(boardList[board]);
+        }
+    }
+
+
     private void setPostData(Task<QuerySnapshot> task) {
         ArrayList<Write_Info> writeInfos = new ArrayList<>();
 
@@ -201,10 +286,20 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
             DocumentSnapshot doc = task.getResult().getDocuments().get(i);
             Log.d(TAG, doc.getId() + "=>" + doc.getData());
             Write_Info writeInfo = doc.toObject(Write_Info.class);
+
+            // 모든 게시글이면
+            if(board == -1) {
+                // 보드 타입 4번 (상담 게시판) 게시글일 경우
+                if(writeInfo.getBoardType() == 4) {
+                    // 패스
+                    continue;
+                }
+            }
+
             writeInfo.setDocId(doc.getId());
             writeInfos.add(writeInfo);
             postListAdapter.setItems(writeInfos);
-            loadingDialog.dismiss();
         }
+        loadingDialog.dismiss();
     }
 }
