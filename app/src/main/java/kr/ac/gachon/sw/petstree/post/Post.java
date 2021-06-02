@@ -29,6 +29,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.CertRequest;
 import kr.ac.gachon.sw.petstree.model.User;
@@ -114,31 +116,36 @@ public class Post extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
 
-        // 작성자 아이디가 현재 로그인 ID와 같으면
-        if(write_info.getPublisher().equals(Auth.getCurrentUser().getUid())) {
-            // Menu 보이기
-            inflater.inflate(R.menu.post_menu, menu);
-        }
-        else {
-            if(Auth.getCurrentUser() != null) {
-                Firestore.getUserData(Auth.getCurrentUser().getUid())
-                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    if(task.getResult() != null) {
-                                        // 사용자가 Admin이면 Menu 추가
-                                        User user = task.getResult().toObject(User.class);
-                                        if (user != null && user.isAdmin()) {
-                                            // Menu 보이기
-                                            inflater.inflate(R.menu.post_menu, menu);
+        try {
+            // 작성자 아이디가 현재 로그인 ID와 같으면
+            if(write_info.getPublisher().equals(Auth.getCurrentUser().getUid())) {
+                // Menu 보이기
+                inflater.inflate(R.menu.post_menu, menu);
+            }
+            else {
+                if(Auth.getCurrentUser() != null) {
+                    Firestore.getUserData(Auth.getCurrentUser().getUid())
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        if(task.getResult() != null) {
+                                            // 사용자가 Admin이면 Menu 추가
+                                            User user = task.getResult().toObject(User.class);
+                                            if (user != null && user.isAdmin()) {
+                                                // Menu 보이기
+                                                inflater.inflate(R.menu.post_menu, menu);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        });
+                            });
+                }
             }
+        } catch (NullPointerException e) {
+            // 비로그인 사용자
         }
+
         return true;
     }
 
