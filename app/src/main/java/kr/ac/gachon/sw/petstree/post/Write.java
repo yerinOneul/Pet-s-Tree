@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import kr.ac.gachon.sw.petstree.R;
+import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
 import kr.ac.gachon.sw.petstree.util.Firestore;
 
@@ -59,6 +60,7 @@ public class Write extends AppCompatActivity {
     private RelativeLayout loaderLayout;
     private static final String TAG = "Write";
     private FirebaseUser user;
+    private User appUser;
     private ArrayList<String> pathList = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
     private LinearLayout parent;
@@ -75,6 +77,10 @@ public class Write extends AppCompatActivity {
         spinner = findViewById(R.id.write_spinner);
         loaderLayout = findViewById(R.id.loaderLayout);
 
+        if(getIntent().getExtras() != null) {
+            appUser = getIntent().getExtras().getParcelable("user");
+        }
+
         actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -86,11 +92,17 @@ public class Write extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_spinner_dropdown_item, items);
         spinner.setAdapter(arrayAdapter);
+        spinner.setSelection(1);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), items[position], Toast.LENGTH_SHORT).show();
-            }
+                if(!appUser.isAdmin()) {
+                    if(position == 0) {
+                        Toast.makeText(Write.this, "공지사항은 관리자만 작성할 수 있습니다!", Toast.LENGTH_SHORT).show();
+                        spinner.setSelection(1);
+                    }
+                }
+             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

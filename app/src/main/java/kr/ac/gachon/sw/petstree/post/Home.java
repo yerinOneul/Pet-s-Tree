@@ -144,6 +144,7 @@ public class Home extends Fragment implements PostListAdapter.ClickListener{
             public void onClick(View v) {
                 if(Auth.getCurrentUser() != null) {
                     Intent intent = new Intent(getContext(), Write.class);
+                    intent.putExtra("user", user);
                     startActivity(intent);
                 }
                 else {
