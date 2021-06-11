@@ -1,16 +1,24 @@
 package kr.ac.gachon.sw.petstree.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
+
+import com.google.firebase.firestore.Exclude;
 
 public class Comment {
     private String userId;
     private String content;
-    private Timestamp writeTime;
+    private Date writeTime;
+    private String publisherNick;
+    private String postId;
 
-    public Comment(String userId, String content, Timestamp writeTime) {
+    public Comment() { }
+
+    public Comment(String userId, String content, Date writeTime, String postId) {
         this.userId = userId;
         this.content = content;
         this.writeTime = writeTime;
+        this.postId = postId;
     }
 
     public String getUserId() {
@@ -25,15 +33,25 @@ public class Comment {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+    public void setContent(String content) { this.content = content; }
 
-    public Timestamp getWriteTime() {
+    public Date getWriteTime() {
         return writeTime;
     }
 
-    public void setWriteTime(Timestamp writeTime) {
+    public void setWriteTime(Date writeTime) {
         this.writeTime = writeTime;
+    }
+
+    public String getPostId(){ return postId;}
+
+    public void setPostId(String postId){ this.postId = postId; }
+
+    @Exclude
+    public String getPublisherNick() {
+        return publisherNick;
+    }
+    public void setPublisherNick(String publisherNick) {
+        this.publisherNick = publisherNick;
     }
 }

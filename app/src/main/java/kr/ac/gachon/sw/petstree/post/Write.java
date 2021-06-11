@@ -53,8 +53,7 @@ import kr.ac.gachon.sw.petstree.util.Firestore;
 
 public class Write extends AppCompatActivity {
     private ActionBar actionBar;
-    private Button save_btn;
-    private Button cancel_btn;
+    private Button save_btn, cancel_btn;
     private ImageButton image_btn;
     private Spinner spinner;
     private RelativeLayout loaderLayout;
@@ -137,6 +136,7 @@ public class Write extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -269,7 +269,9 @@ public class Write extends AppCompatActivity {
                 });
     }
 
+
     private void startToast(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+
 }

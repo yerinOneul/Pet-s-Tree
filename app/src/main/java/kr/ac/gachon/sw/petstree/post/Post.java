@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,20 +21,33 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.annotation.Nullable;
 
 import kr.ac.gachon.sw.petstree.R;
 import kr.ac.gachon.sw.petstree.model.CertRequest;
+import kr.ac.gachon.sw.petstree.model.Comment;
 import kr.ac.gachon.sw.petstree.model.User;
 import kr.ac.gachon.sw.petstree.model.Write_Info;
 import kr.ac.gachon.sw.petstree.util.Auth;
@@ -43,14 +58,16 @@ import kr.ac.gachon.sw.petstree.util.Util;
 
 public class Post extends AppCompatActivity {
     private static String LOG_TAG = "Post";
-
+    private CommentAdapter commentAdapter;
     private LoadingDialog loadingDialog;
     private ActionBar actionBar;
     private Write_Info write_info;
-
+    private Comment comment;
     private EditText edTitle;
+    private EditText comment_et;
     private TextView tvPublisher;
     private TextView tvTime;
+    private Button comment_btn;
     private LinearLayout parent;
     private ArrayList<String> contents = new ArrayList<>();
 
@@ -58,12 +75,43 @@ public class Post extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        loadingDialog = new LoadingDialog(this);
-
         edTitle = findViewById(R.id.post_title);
         tvPublisher = findViewById(R.id.publisher);
         tvTime = findViewById(R.id.time);
         parent = findViewById(R.id.contentsLayout);
+        comment_btn = findViewById(R.id.comment_btn);
+        comment_et = findViewById(R.id.comment_edit);
+
+        loadingDialog = new LoadingDialog(getApplicationContext());
+
+        // 댓글 목록 생성
+        RecyclerView commentList = findViewById(R.id.recycler_post_list);
+        commentList.setLayoutManager(new LinearLayoutManager(this));
+
+        commentAdapter = new CommentAdapter();
+        commentList.setAdapter(commentAdapter);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+        db.collection("comments")
+                .orderBy("writeTime", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                 loadingDialog.dismiss();
+                            }
+                            else setCommentData(task);
+                        } else {
+                            Toast.makeText(getApplicationContext(), R.string.error_server, Toast.LENGTH_SHORT).show();
+                            Log.d(LOG_TAG, "Error getting documents:", task.getException());
+                                loadingDialog.dismiss();
+                            }
+                        }
+                    });
+
 
         if (getIntent().hasExtra("post_view")) {
             write_info = getIntent().getParcelableExtra("post_view");
@@ -110,6 +158,13 @@ public class Post extends AppCompatActivity {
 
             }
         }
+
+        comment_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveComment();
+            }
+        });
     }
 
     @Override
@@ -218,6 +273,46 @@ public class Post extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void saveComment() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String content = comment_et.getText().toString();
+
+        comment = new Comment(user.getUid(), content, new Date(), write_info.getDocId());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("comments").document(String.valueOf(new Date())).set(comment)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()) {
+                            //댓글수 늘리기
+                            db.collection("posts").document(write_info.getDocId()).update("num_comments", FieldValue.increment(1));
+                            //댓글창에 넣은 내용 clear
+                            comment_et.setText("");
+                        }
+                        else {
+                            Log.w(LOG_TAG, "Error adding document", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void setCommentData(Task<QuerySnapshot> task) {
+        ArrayList<Comment> comments = new ArrayList<>();
+
+        for(int i = 0; i < task.getResult().getDocuments().size(); i++) {
+            DocumentSnapshot doc = task.getResult().getDocuments().get(i);
+            Log.d(LOG_TAG, doc.getId() + "=>" + doc.getData());
+            Comment comment = doc.toObject(Comment.class);
+
+            // post ID가 일치하는 경우만 가져오기
+            if(comment.getPostId().equals(write_info.getDocId())) {
+                comments.add(comment);
+                commentAdapter.setItems(comments);
+            }
+        }
+        loadingDialog.dismiss();
     }
 }
 

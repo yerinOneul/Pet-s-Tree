@@ -74,7 +74,7 @@ public class Write_Info implements Parcelable, Comparable {
     public int getBoardType() { return boardType; }
     public void setBoardType(int boardType) { this.boardType = boardType; }
     public int getNum_comments()  { return num_comments; }
-    public void setNum_comments(int boardType) { this.boardType = boardType; }
+    public void setNum_comments(int num_comments) { this.num_comments = num_comments; }
 
     @Exclude
     public String getPublisherNick() {

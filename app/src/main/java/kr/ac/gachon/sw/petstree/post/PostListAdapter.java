@@ -69,15 +69,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.ViewHo
                             User userData = task.getResult().toObject(User.class);
                             item.setPublisherNick(userData.getUserNickName());
                             viewHolder.publisher.setText(item.getPublisherNick());
+                            viewHolder.num_comments.setText(String.valueOf(item.getNum_comments()));
                         }
                         else {
                             item.setPublisherNick("Unknown");
                             viewHolder.publisher.setText(item.getPublisherNick());
+                            viewHolder.num_comments.setText(String.valueOf(item.getNum_comments()));
                         }
                     }
                 });
-
-        viewHolder.num_comments.setText(String.valueOf(item.getNum_comments()));
     }
 
 
