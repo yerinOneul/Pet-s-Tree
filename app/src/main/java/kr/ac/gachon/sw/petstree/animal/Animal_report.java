@@ -218,6 +218,27 @@ public class Animal_report extends AppCompatActivity {
                 View view = parent.getChildAt(i);
                 if (view instanceof EditText) {
                     String text = ((EditText) view).getText().toString();
+                    if (view.getId()==R.id.report_sex){
+                        text = "성별 : "+text;
+                    }
+                    else if (view.getId() == R.id.report_age){
+                        text = "나이 : "+text;
+                    }
+                    else if (view.getId() == R.id.report_comment){
+                        text = "특징 : "+text;
+                    }
+                    else if (view.getId() == R.id.report_time){
+                        text = "발견 일시 : "+text;
+                    }
+                    else if (view.getId() == R.id.report_location){
+                        text = "발견 장소 : "+text;
+                    }
+                    else if (view.getId() == R.id.report_name){
+                        text = "제보자명 : "+text;
+                    }
+                    else if (view.getId() == R.id.report_phone){
+                        text = "제보자 연락처 : "+text;
+                    }
                     if (text.length() > 0) {
                         contentsList.add(text);
                     }

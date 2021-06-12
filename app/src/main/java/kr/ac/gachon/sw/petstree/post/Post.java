@@ -136,8 +136,7 @@ public class Post extends AppCompatActivity {
             Log.w(LOG_TAG, String.valueOf(contents.size()));
 
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            // array의 index가 짝수이면 text, 홀수이면 image
-            //  ---> contents 내용이 firebase 주소로 시작하면 이미지, 아니면 text
+            //contents 내용이 firebase 주소로 시작하면 이미지, 아니면 text
             for (int i = 0; i < contents.size(); i++) {
                 if (contents.get(i).startsWith("https://firebasestorage")) {
                     ImageView imageView = new ImageView(Post.this);
@@ -146,8 +145,46 @@ public class Post extends AppCompatActivity {
                     parent.addView(imageView);
                     Glide.with(this).load(contents.get(i)).override(1000).into(imageView);
                 }
+                //제보자 정보 숨기기
+                else if (contents.get(i).startsWith("제보자명 :") || contents.get(i).startsWith("제보자 연락처 :")) {
+                    String text = contents.get(i);
+                    // 사용자가 Admin이면 제보자 정보 보이기
+                    if(Auth.getCurrentUser() != null) {
+                        Firestore.getUserData(Auth.getCurrentUser().getUid())
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            if (task.getResult() != null) {
+                                                User user = task.getResult().toObject(User.class);
+                                                if (user != null && (user.isAdmin() ||write_info.getPublisher().equals(Auth.getCurrentUser().getUid()))) {
+                                                    TextView editText = new TextView(Post.this);
+                                                    editText.setLayoutParams(layoutParams);
+                                                    editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
+                                                    parent.addView(editText);
+                                                    editText.setText(text);
+                                                }
+                                                else{
+                                                    TextView editText = new TextView(Post.this);
+                                                    editText.setLayoutParams(layoutParams);
+                                                    editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
+                                                    parent.addView(editText);
+                                                    if (text.startsWith("제보자명 :")){
+                                                        editText.setText("※제보자명은 관리자와 제보자만 확인 가능합니다.");
+                                                    }
+                                                    else{
+                                                        editText.setText("※제보자 연락처는 관리자와 제보자만 확인 가능합니다.");
+                                                    }
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                    }
+
+                }
                 else{
-                    //custom view 만들어서 수정해볼게요
                     TextView editText = new TextView(Post.this);
                     editText.setLayoutParams(layoutParams);
                     editText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
